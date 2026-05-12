@@ -862,23 +862,12 @@ function renderSetup(){
   /* 코스 그리드 */
   var g=document.getElementById('pgrid');g.innerHTML='';
   courses.forEach(function(c){
-    var d=document.createElement('div');
-    var isEmpty=c.empty&&!c.stepIds.length;
-    d.className='pc'+(selCourse===c.id?' sel':'')+(isEmpty?' custom-slot':'');
-    if(isEmpty){
-      d.innerHTML='<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
-        +'<div class="pc-rec">'+c.rec+'</div>'
-        +'<div class="pc-edit-lbl">✏️ 커스텀 탭에서 편집</div>';
-      d.addEventListener('click',function(){switchRoot('customize');switchCustTab('courses');openCourseModal(c.id,null);});
-    } else {
-      d.innerHTML='<div class="pc-check">'+svgChk(10)+'</div>'
-        +'<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
-        +'<div class="pc-time">'+toHM(getCourseEst(c))+'</div>'
-        +'<div class="pc-flow">'+(c.stepIds||[]).map(function(sid){var s=steps.find(function(x){return x.id===sid;});return s?s.name:'';}).filter(Boolean).join(' → ')+'</div>'
-        +'<div class="pc-rec">'+c.rec+'</div>';
-      d.addEventListener('click',function(){selCourse=c.id;renderSetup();updatePreview();});
-    }
-    g.appendChild(d);
+    var isEmpty=c.empty&&!(c.stepIds||[]).length;
+    var card=renderCourseCard(c, function(){
+      if(isEmpty){switchRoot('customize');switchCustTab('courses');openCourseModal(c.id,null);}
+      else{selCourse=c.id;renderSetup();updatePreview();}
+    });
+    g.appendChild(card);
   });
   updatePreview();
 }
@@ -898,9 +887,70 @@ function getActiveSteps(){
   }).filter(Boolean);
 }
 
+/* 코스 핵심 키워드 추출 (최대 5개) */
+function getCourseKeywords(c){
+  var skip={prep:1,cleanup:1,'rinse-foam':1,'rinse-acid':1,'rinse-mit':1,final:1,'pre1':1};
+  var short={
+    interior:'실내',wheel:'휠',alkali:'알칼리',snowfoam:'스노우폼',acid:'산성',
+    mitwash:'미트세차',oilfilm:'유막제거',pekl:'페클','touchless-pre':'습식발수',
+    dry:'드라잉','glass-coat':'유리발수','liquid-wax':'물왁스',touchless:'습식발수',
+    'solid-wax':'고체왁스',tire:'타이어'
+  };
+  var keys=(c.stepIds||[]).filter(function(sid){return !skip[sid];})
+    .map(function(sid){return short[sid]||null;}).filter(Boolean);
+  /* 중복 제거 */
+  var seen={};keys=keys.filter(function(k){if(seen[k])return false;seen[k]=true;return true;});
+  if(keys.length>5) keys=keys.slice(0,4).concat(['…']);
+  return keys.join(' · ');
+}
+
+function renderCourseCard(c, onClick){
+  var d=document.createElement('div');
+  var isEmpty=c.empty&&!(c.stepIds||[]).length;
+  d.className='pc'+(selCourse===c.id?' sel':'')+(isEmpty?' custom-slot':'');
+  if(isEmpty){
+    d.innerHTML='<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
+      +'<div class="pc-rec">'+c.rec+'</div>'
+      +'<div class="pc-edit-lbl">✏️ 커스텀 탭에서 편집</div>';
+  } else {
+    var keywords=getCourseKeywords(c);
+    d.innerHTML='<div class="pc-check">'+svgChk(10)+'</div>'
+      +'<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
+      +'<div class="pc-time">'+toHM(getCourseEst(c))+'</div>'
+      +(keywords?'<div class="pc-flow">'+keywords+'</div>':'')
+      +'<div class="pc-rec">'+c.rec+'</div>';
+  }
+  d.addEventListener('click', onClick);
+  return d;
+}
+
 function renderOptionPane(){
-  /* 옵션 토글: 코스 별 포함 단계 표시는 미리보기로 대체 */
-  document.getElementById('tog-list').innerHTML='<div style="font-size:13px;color:var(--tx2);padding:8px 0;">코스 선택 탭에서 코스를 선택하면 자동으로 단계가 구성됩니다.</div>';
+  /* 코스 그리드 */
+  var g2=document.getElementById('pgrid2');
+  if(g2){
+    g2.innerHTML='';
+    courses.forEach(function(c){
+      var isEmpty=c.empty&&!(c.stepIds||[]).length;
+      var card=renderCourseCard(c, function(){
+        if(isEmpty){switchRoot('customize');switchCustTab('courses');openCourseModal(c.id,null);}
+        else{selCourse=c.id;renderSetup();renderOptionPane();updatePreview();}
+      });
+      g2.appendChild(card);
+    });
+  }
+  /* 선택 배너 */
+  var banner=document.getElementById('sel-course-banner');
+  var c=selCourse?courses.find(function(x){return x.id===selCourse;}):null;
+  if(banner){
+    if(c&&!c.empty){
+      banner.style.display='flex';
+      document.getElementById('scb-icon').textContent=c.icon;
+      document.getElementById('scb-name').textContent=c.name;
+      document.getElementById('scb-sub').textContent=toHM(getCourseEst(c))+' · '+c.rec;
+    } else {
+      banner.style.display='none';
+    }
+  }
   /* 예약 칩 */
   var chips=document.getElementById('bs-chips');chips.innerHTML='';
   [1,2,3,4,5,6,8].forEach(function(h){
