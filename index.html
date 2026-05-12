@@ -426,6 +426,16 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .pwa-step{font-size:12px;color:var(--tx2);display:flex;align-items:flex-start;gap:6px;}
 .pwa-step-n{font-family:var(--mono);font-weight:700;color:var(--blue);flex-shrink:0;}
 
+/* 진행중 복원 배너 */
+.resume-banner{background:var(--s1);border:1.5px solid var(--acc);border-radius:var(--rl);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);margin-bottom:14px;}
+.resume-banner-icon{font-size:24px;flex-shrink:0;}
+.resume-banner-body{flex:1;min-width:0;}
+.resume-banner-title{font-size:14px;font-weight:700;color:var(--acc);}
+.resume-banner-sub{font-size:12px;color:var(--tx2);font-family:var(--mono);margin-top:2px;}
+.btn-resume{height:40px;padding:0 18px;background:var(--accbtn);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);flex-shrink:0;}
+/* 하단 탭 진행중 표시 */
+.rt-progress{font-size:9px;font-family:var(--mono);color:var(--acc);font-weight:700;}
+
 svg{display:block;}
 </style>
 </head>
@@ -436,7 +446,7 @@ svg{display:block;}
   <div class="rt on" id="rt-timer" onclick="switchRoot('timer')">
     <div class="rt-icon">⏱</div>
     <div class="rt-lbl">타이머</div>
-    <div class="rt-dot"></div>
+    <div class="rt-progress" id="rt-progress" style="display:none;"></div>
   </div>
   <div class="rt" id="rt-customize" onclick="switchRoot('customize')">
     <div class="rt-icon">⚙️</div>
@@ -462,6 +472,14 @@ svg{display:block;}
 
     <!-- 코스 선택 -->
     <div class="setup-pane on" id="spane-course">
+      <div id="resume-banner" style="display:none;" class="resume-banner">
+        <div class="resume-banner-icon">▶️</div>
+        <div class="resume-banner-body">
+          <div class="resume-banner-title" id="resume-title">세차 진행 중</div>
+          <div class="resume-banner-sub" id="resume-sub">—</div>
+        </div>
+        <button class="btn-resume" onclick="resumeSession()">이어하기</button>
+      </div>
       <div class="lbl" style="margin-top:2px;">저장된 코스</div>
       <div class="preset-grid" id="pgrid"></div>
     </div>
@@ -521,7 +539,7 @@ svg{display:block;}
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <div class="hd-clock" id="hdclock">00:00</div>
-          <button class="btn-cfg" onclick="goSetup()">설정</button>
+          <button class="btn-cfg" onclick="goHome()">🏠 홈</button>
         </div>
       </div>
       <div class="ah-row2" id="ah-row2" style="display:none;">
@@ -847,6 +865,14 @@ function switchRoot(tab){
     document.getElementById(t+'-panel').className='root-panel'+(t===tab?' on':'');
   });
   if(tab==='customize') refreshCustomizePanes();
+  if(tab==='timer'){
+    /* 진행 중 세션이 있으면 앱 화면 바로 표시 */
+    if(sessStart){
+      showApp(true);
+    } else {
+      updateResumeBanner();
+    }
+  }
 }
 
 /* ══ SETUP ══ */
@@ -1099,6 +1125,26 @@ var activeSteps=[], cur=0, sessStart=null, stepStart=null, results={};
 var stepIv=null, globalIv=null, stepSec=0;
 var isPaused=false, pauseStart=null, totalPaused=0;
 
+/* ══ SESSION SAVE / RESTORE ══ */
+var K_SESSION='dt_session';
+function saveSession(){
+  if(!sessStart)return;
+  try{
+    sessionStorage.setItem(K_SESSION,JSON.stringify({
+      sessStart:sessStart.getTime(),
+      stepStart:stepStart.getTime(),
+      cur:cur,results:results,
+      selCourse:selCourse,bookMin:bookMin,
+      totalPaused:totalPaused,
+      stepSec:stepSec
+    }));
+  }catch(e){}
+}
+function clearSession(){try{sessionStorage.removeItem(K_SESSION);}catch(e){}}
+function loadSession(){
+  try{var r=sessionStorage.getItem(K_SESSION);return r?JSON.parse(r):null;}catch(e){return null;}
+}
+
 /* ══ APP TAB ══ */
 function switchTab(tab){
   ['prog','dil','info','log'].forEach(function(t){
@@ -1137,14 +1183,117 @@ function startApp(){
   scrollToCur();
 }
 
+/* ══ HOME / RESUME ══ */
+function goHome(){
+  /* 일시정지 후 세션 저장하고 홈으로 — 기록 유지 */
+  if(sessStart&&!isPaused) togglePause();
+  saveSession();
+  showApp(false);
+  updateResumeBanner();
+  updateTimerTabBadge();
+}
+
+function showApp(show){
+  document.getElementById('app').style.display=show?'flex':'none';
+  if(!show){document.getElementById('app').style.flexDirection='';}
+  document.getElementById('setup').style.display=show?'none':'flex';
+  if(show){
+    document.getElementById('ah-row2').style.display='flex';
+    document.getElementById('scroll').className='on';
+  }
+}
+
+function resumeSession(){
+  var s=loadSession();
+  if(!s)return;
+  selCourse=s.selCourse;bookMin=s.bookMin||0;
+  activeSteps=getActiveSteps();
+  cur=s.cur||0;results=s.results||{};
+  sessStart=new Date(s.sessStart);stepStart=new Date(s.stepStart);
+  totalPaused=s.totalPaused||0;isPaused=false;
+  stepSec=Math.max(0,Math.floor((new Date()-stepStart-totalPaused)/1000));
+  showApp(true);
+  renderSteps();updateProg();
+  startStepTimer();
+  reqWakeLock();
+  clearInterval(globalIv);
+  globalIv=setInterval(function(){tickGlobal();saveSession();},1000);tickGlobal();
+  scrollToCur();
+  updateTimerTabBadge();
+  /* 일시정지 해제 */
+  if(isPaused)togglePause();
+}
+
+function updateResumeBanner(){
+  var s=loadSession();
+  var banner=document.getElementById('resume-banner');
+  if(!banner)return;
+  if(s&&s.sessStart){
+    var c=courses.find(function(x){return x.id===s.selCourse;});
+    var done=Object.keys(s.results||{}).length;
+    var tot=getActiveStepsFromCourse(s.selCourse).length;
+    var elMin=Math.round((Date.now()-s.sessStart)/60000);
+    document.getElementById('resume-title').textContent=(c?c.icon+' '+c.name:'세차')+' 진행 중';
+    document.getElementById('resume-sub').textContent=done+'/'+tot+' 단계 완료 · '+elMin+'분 경과';
+    banner.style.display='flex';
+  } else {
+    banner.style.display='none';
+  }
+}
+
+function getActiveStepsFromCourse(courseId){
+  var c=courses.find(function(x){return x.id===courseId;});
+  if(!c)return [];
+  var n=1;
+  return (c.stepIds||[]).map(function(sid){
+    var s=steps.find(function(x){return x.id===sid;});
+    return s?Object.assign({},s,{dn:n++}):null;
+  }).filter(Boolean);
+}
+
+function updateTimerTabBadge(){
+  var s=loadSession();
+  var prog=document.getElementById('rt-progress');
+  if(!prog)return;
+  if(s&&s.sessStart){
+    var done=Object.keys(s.results||{}).length;
+    var tot=getActiveStepsFromCourse(s.selCourse).length;
+    prog.textContent='진행중 '+done+'/'+tot;
+    prog.style.display='block';
+  } else {
+    prog.style.display='none';
+  }
+}
+
+/* ══ START ══ */
+function startApp(){
+  if(!selCourse){alert('코스를 선택해주세요.');return;}
+  activeSteps=getActiveSteps();
+  if(!activeSteps.length){alert('선택한 코스에 단계가 없습니다.');return;}
+  /* 기존 세션 있으면 확인 */
+  if(loadSession()){
+    if(!confirm('진행 중인 세차가 있어요. 새로 시작하면 기존 기록이 사라집니다. 계속할까요?'))return;
+  }
+  clearSession();
+  cur=0;results={};stepSec=0;totalPaused=0;isPaused=false;
+  sessStart=new Date();stepStart=new Date();
+  showApp(true);
+  renderSteps();updateProg();
+  startStepTimer();
+  reqWakeLock();
+  clearInterval(globalIv);
+  globalIv=setInterval(function(){tickGlobal();saveSession();},1000);tickGlobal();
+  scrollToCur();
+  updateTimerTabBadge();
+}
+
 function goSetup(){
-  if(!confirm('설정 화면으로 돌아가면 현재 기록이 초기화됩니다. 계속할까요?'))return;
+  if(!confirm('홈으로 돌아가면 현재 기록이 초기화됩니다. 계속할까요?'))return;
   clearInterval(globalIv);clearInterval(stepIv);
-  relWakeLock();sessStart=null;
-  document.getElementById('app').style.display='none';
-  document.getElementById('app').style.flexDirection='';
-  document.getElementById('scroll').className='';
-  document.getElementById('setup').style.display='flex';
+  relWakeLock();clearSession();sessStart=null;
+  showApp(false);
+  updateResumeBanner();
+  updateTimerTabBadge();
 }
 
 function startStepTimer(){
@@ -1381,6 +1530,10 @@ function showDone(){
   var fast=activeSteps.filter(function(_,i){return results[i]&&!results[i].skipped&&results[i].min<=activeSteps[i].est;}).length;
   var diff=totalMin<=tot?'⚡ '+(tot-totalMin)+'분 단축':'+'+(totalMin-tot)+'분';
   saveHistory();
+  clearSession();
+  clearInterval(globalIv);clearInterval(stepIv);
+  relWakeLock();sessStart=null;
+  updateTimerTabBadge();
   var h='<div class="dstat"><div class="ds-l">총 소요</div><div class="ds-v">'+toHM(totalMin)+'</div></div>'
     +'<div class="dstat"><div class="ds-l">예상 대비</div><div class="ds-v">'+diff+'</div></div>'
     +'<div class="dstat"><div class="ds-l">예정 내 완료</div><div class="ds-v">'+fast+'/'+comp+'</div></div>';
@@ -1804,9 +1957,11 @@ document.querySelectorAll('.modal-bg').forEach(function(bg){
   selCourse=courses.length?courses[0].id:null;
   renderSetup();
   renderDilGrid('dil-setup-grid',true);
-  /* 설정 탭 초기값 */
   document.getElementById('setting-appname').value=appSettings.appName||'';
   document.getElementById('setting-location').value=appSettings.location||'';
+  /* 이전 세션 복원 배너 표시 */
+  updateResumeBanner();
+  updateTimerTabBadge();
 })();
 </script>
 </body>
