@@ -1173,6 +1173,9 @@ var isPaused=false, pauseStart=null, totalPaused=0;
 var K_SESSION='dt_session';
 function saveSession(){
   if(!sessStart)return;
+  /* continue 모드: 현재까지 일시정지 누적 포함해서 저장 */
+  var savedTotalPaused=totalPaused+((!isPaused)&&pauseStart?0:0);
+  /* isPaused 중에 저장하는 경우(pause 모드)는 homeAction에서 미리 totalPaused 확정됨 */
   try{
     sessionStorage.setItem(K_SESSION,JSON.stringify({
       sessStart:sessStart.getTime(),
@@ -1180,7 +1183,8 @@ function saveSession(){
       cur:cur,results:results,
       selCourse:selCourse,bookMin:bookMin,
       totalPaused:totalPaused,
-      stepSec:stepSec
+      stepSec:stepSec,
+      wasPaused:isPaused
     }));
   }catch(e){}
 }
@@ -1242,23 +1246,27 @@ function goHome(){
 function homeAction(type){
   closeModal('home-modal');
   if(type==='pause'){
-    /* 일시정지 후 홈 — 이어하기 가능 */
-    if(!isPaused) togglePause();
+    /* 일시정지 — globalIv 멈추고 현재까지 totalPaused 확정 후 저장 */
+    clearInterval(globalIv);clearInterval(stepIv);
+    /* 현재까지 경과된 일시정지 시간을 totalPaused에 완전히 누적 */
+    if(isPaused&&pauseStart){ totalPaused+=(Date.now()-pauseStart.getTime()); pauseStart=null; }
+    isPaused=true; /* 홈 이탈 = 일시정지 상태로 표시 */
     saveSession();
+    isPaused=false; /* 내부 상태 초기화 (배너 등 오작동 방지) */
+    relWakeLock();
     showApp(false);
     updateResumeBanner();
     updateTimerTabBadge();
   } else if(type==='continue'){
-    /* 타이머 유지하며 홈 — 타이머탭 누르면 바로 복귀 */
+    /* 타이머 유지하며 홈 — globalIv는 계속 돌아감 */
     saveSession();
     showApp(false);
     updateResumeBanner();
     updateTimerTabBadge();
   } else if(type==='reset'){
-    /* 초기화 */
     clearInterval(globalIv);clearInterval(stepIv);
     relWakeLock();clearSession();sessStart=null;
-    isPaused=false;
+    isPaused=false;pauseStart=null;totalPaused=0;
     document.getElementById('paused-banner').className='paused-banner';
     showApp(false);
     updateResumeBanner();
@@ -1283,20 +1291,20 @@ function resumeSession(){
   activeSteps=getActiveSteps();
   cur=s.cur||0;results=s.results||{};
   sessStart=new Date(s.sessStart);
-  totalPaused=s.totalPaused||0;
-  isPaused=false; /* 이어하기 시 항상 재개 */
+  stepStart=new Date(s.stepStart);   /* 저장된 단계 시작 시각 복원 */
+  totalPaused=s.totalPaused||0;     /* 누적 일시정지 시간 복원 */
+  isPaused=false;
   pauseStart=null;
-  stepStart=new Date(); /* 이 단계 시작은 지금부터 */
-  stepSec=0;
+  /* 현재 시각 기준으로 이 단계 경과 시간 재계산 */
+  stepSec=Math.max(0,Math.floor((Date.now()-stepStart.getTime()-totalPaused)/1000));
   showApp(true);
   renderSteps();updateProg();
-  startStepTimer();
+  startStepTimerFrom(stepSec);
   reqWakeLock();
   clearInterval(globalIv);
   globalIv=setInterval(function(){tickGlobal();saveSession();},1000);tickGlobal();
   scrollToCur();
   updateTimerTabBadge();
-  /* 일시정지 배너 해제 */
   document.getElementById('paused-banner').className='paused-banner';
   document.querySelectorAll('.btn-pause-s').forEach(function(b){
     b.className='btn-pause-s';
@@ -1379,6 +1387,17 @@ function goSetup(){
 function startStepTimer(){
   clearInterval(stepIv);stepSec=0;
   stepStart=new Date();
+  stepIv=setInterval(function(){
+    if(isPaused)return;
+    stepSec++;
+    var el=document.getElementById('active-tmr');
+    if(el)el.textContent=toMMSS(stepSec);
+  },1000);
+}
+
+function startStepTimerFrom(fromSec){
+  clearInterval(stepIv);
+  stepSec=fromSec;
   stepIv=setInterval(function(){
     if(isPaused)return;
     stepSec++;
