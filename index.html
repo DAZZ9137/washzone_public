@@ -103,7 +103,7 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .pc-edit-lbl{font-size:11px;color:var(--tx3);font-weight:500;margin-top:4px;}
 
 /* 예약 시간 */
-.bs-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.bs-chips{display:grid;grid-template-columns:repeat(3,auto);gap:5px;justify-content:start;margin-bottom:8px;}
 .bs-chip{height:32px;padding:0 11px;border-radius:16px;background:var(--s2);border:1.5px solid var(--b2);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;}
 .bs-chip.sel{background:var(--acc2);border-color:var(--acc);color:var(--acc);}
 .bs-adj{display:flex;align-items:center;gap:8px;}
@@ -204,7 +204,7 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .sc.done .ct-prod,.sc.pending .ct-prod,.sc.skipped .ct-prod{display:none;}
 .cr{display:flex;align-items:center;gap:5px;flex-shrink:0;}
 .est-b{font-family:var(--mono);font-size:11px;color:var(--tx3);background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:2px 6px;}
-.sc.active .est-b{display:none;}
+.sc.active .est-b{display:inline-flex;font-size:11px;color:var(--tx3);background:rgba(255,255,255,.5);border:1px solid rgba(0,0,0,.08);border-radius:4px;padding:2px 7px;margin-left:4px;}
 .next-badge{display:none;font-size:10px;font-family:var(--mono);font-weight:500;color:var(--blue);background:var(--blue2);border:1px solid rgba(0,112,192,.2);border-radius:4px;padding:2px 7px;}
 .sc.next .next-badge{display:block;}
 .step-tmr{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--acc);display:none;min-width:64px;text-align:right;}
@@ -519,18 +519,19 @@ svg{display:block;}
       </div>
       <div style="margin-bottom:14px;">
         <div class="lbl">예약 시간</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div id="bs-val-wrap" style="flex-shrink:0;min-width:70px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div style="flex-shrink:0;min-width:72px;">
             <div class="bs-val-lbl">설정된 예약 시간</div>
             <div class="bs-val-big" id="bs-val">미설정</div>
           </div>
-          <div class="bs-chips" id="bs-chips" style="flex:1;margin-bottom:0;display:flex;flex-wrap:wrap;gap:5px;"></div>
-          <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
-            <div style="display:flex;gap:5px;">
-              <button class="bs-adj-btn" onclick="adjBook(-30)">－30분</button>
-              <button class="bs-adj-btn" onclick="adjBook(30)">＋30분</button>
+          <div class="bs-chips" id="bs-chips" style="flex:1;margin-bottom:0;"></div>
+          <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;min-width:108px;">
+            <div style="display:flex;align-items:center;background:var(--s2);border:1.5px solid var(--b2);border-radius:8px;overflow:hidden;height:36px;">
+              <button onclick="adjBook(-30)" style="flex:1;height:100%;background:none;border:none;font-size:16px;font-weight:700;color:var(--tx2);cursor:pointer;">－</button>
+              <div style="flex:2;text-align:center;font-size:13px;font-weight:700;font-family:var(--mono);color:var(--tx2);border-left:1px solid var(--b2);border-right:1px solid var(--b2);height:100%;display:flex;align-items:center;justify-content:center;">30분</div>
+              <button onclick="adjBook(30)" style="flex:1;height:100%;background:none;border:none;font-size:16px;font-weight:700;color:var(--tx2);cursor:pointer;">＋</button>
             </div>
-            <button class="bs-adj-btn" onclick="resetBook()" style="width:100%;">초기화</button>
+            <button class="bs-adj-btn" style="width:100%;" onclick="resetBook()">초기화</button>
           </div>
         </div>
       </div>
@@ -577,8 +578,8 @@ svg{display:block;}
         <div class="ah-stat"><div class="ah-stat-lbl">남은</div><div class="ah-stat-val" id="ah-remain">—</div></div>
         <div class="ah-stat"><div class="ah-stat-lbl">예상소요</div><div class="ah-stat-val" id="ah-total-est">—</div></div>
         <div class="ah-stat proj-col"><div class="ah-stat-lbl">예상종료</div><div class="ah-stat-val" id="ah-proj">—</div></div>
-        <div class="ah-stat"><div class="ah-stat-lbl">이 단계</div><div class="ah-stat-val" id="bsel">—</div></div>
         <div class="ah-stat"><div class="ah-stat-lbl">완료/전체</div><div class="ah-stat-val" id="bsdone">0/0</div></div>
+        <div style="display:none" id="bsel"></div>
       </div>
     </div>
     <div class="paused-banner" id="paused-banner">⏸ 일시정지 중 — 재개하려면 ▶ 버튼을 누르세요</div>
@@ -1045,7 +1046,7 @@ function renderOptionPane(){
   }
   /* 예약 칩 */
   var chips=document.getElementById('bs-chips');chips.innerHTML='';
-  [1,2,3,4,5,6,8].forEach(function(h){
+  [1,2,3,4,5,6,8,10,12].forEach(function(h){
     var btn=document.createElement('button');
     btn.className='bs-chip'+(bookMin===h*60?' sel':'');
     btn.textContent=h+'H';
@@ -1557,6 +1558,10 @@ function renderSteps(){
     ct.appendChild(makeEl('div','nb',pad(s.dn)));
     var cm=makeEl('div','cm','');
     cm.appendChild(makeEl('div','ct-name',s.name));
+    if(state==='active'){
+      var estEl=makeEl('span','est-b','예상 '+s.est+'분');
+      cm.appendChild(estEl);
+    }
     cm.appendChild(makeEl('div','ct-prod',s.prod));
     ct.appendChild(cm);
     var cr=makeEl('div','cr','');
