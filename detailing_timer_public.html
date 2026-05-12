@@ -88,13 +88,19 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
 .pc{background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--rl);padding:12px;cursor:pointer;position:relative;box-shadow:var(--shadow);transition:all .15s;}
 .pc.sel{border-color:var(--acc);background:var(--acc2);}
-.pc-icon{font-size:18px;margin-bottom:4px;}
-.pc-name{font-size:13px;font-weight:700;color:var(--tx);}
+.pc-top{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.pc-icon{font-size:18px;flex-shrink:0;}
+.pc-name{font-size:13px;font-weight:700;color:var(--tx);flex:1;min-width:0;}
 .pc.sel .pc-name{color:var(--acc);}
 .pc-time{font-size:11px;color:var(--blue);font-family:var(--mono);margin:2px 0;}
+.pc-flow{font-size:11px;color:var(--tx2);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:2px;}
 .pc-rec{font-size:11px;color:var(--ora);}
 .pc-check{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--acc);display:none;align-items:center;justify-content:center;}
 .pc.sel .pc-check{display:flex;}
+.pc.custom-slot{border-style:dashed;border-color:var(--acc);background:var(--acc3);}
+.pc.custom-slot .pc-name{color:var(--acc);}
+.pc.custom-slot .pc-rec{color:var(--tx3);}
+.pc-edit-lbl{font-size:11px;color:var(--acc);font-weight:600;margin-top:4px;}
 
 /* 예약 시간 */
 .bs-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
@@ -460,8 +466,12 @@ svg{display:block;}
     <!-- 옵션 -->
     <div class="setup-pane" id="spane-option">
       <div style="margin-bottom:14px;">
-        <div class="lbl">포함 옵션</div>
-        <div class="tog-list" id="tog-list"></div>
+        <div class="lbl">코스 선택</div>
+        <div class="preset-grid" id="pgrid2"></div>
+        <div id="sel-course-banner" style="display:none;background:var(--acc2);border:1.5px solid var(--acc);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-top:6px;">
+          <span id="scb-icon" style="font-size:20px;"></span>
+          <div><div id="scb-name" style="font-size:14px;font-weight:700;color:var(--acc);"></div><div id="scb-sub" style="font-size:11px;color:var(--tx3);font-family:var(--mono);"></div></div>
+        </div>
       </div>
       <div style="margin-bottom:14px;">
         <div class="lbl">예약 시간</div>
@@ -552,6 +562,18 @@ svg{display:block;}
   <div class="done-icon">✓</div>
   <div class="done-title">세차 완료! 🎉</div>
   <div class="done-stats" id="donestats"></div>
+
+  <!-- 시간 업데이트 박스 -->
+  <div id="done-update-box" style="display:none;width:100%;max-width:420px;background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--rl);padding:14px 16px;display:none;flex-direction:column;gap:8px;box-shadow:var(--shadow);">
+    <div style="font-size:13px;font-weight:700;color:var(--tx);">⏱ 단계별 예상 시간 업데이트</div>
+    <div style="font-size:11px;color:var(--tx2);line-height:1.5;" id="done-update-sub"></div>
+    <div id="done-step-list" style="display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto;"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-sec" style="flex:1;height:38px;font-size:13px;" onclick="document.getElementById('done-update-box').style.display='none'">건너뛰기</button>
+      <button class="btn-primary" style="flex:2;height:38px;font-size:13px;" onclick="applyTimeUpdate()">이 시간으로 업데이트</button>
+    </div>
+  </div>
+
   <button class="btn-ok" onclick="document.getElementById('done-ov').classList.remove('show')">확인</button>
 </div>
 
@@ -776,6 +798,8 @@ var DEFAULT_COURSES = [
    stepIds:['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','pekl','final','dry','solid-wax','tire','cleanup']},
   {id:'full',icon:'💎',name:'풀 디테일링',rec:'시즌 리셋',
    stepIds:['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','oilfilm','pekl','final','dry','glass-coat','solid-wax','tire','cleanup']},
+  {id:'custom1',icon:'⭐',name:'나만의 코스 1',rec:'탭하여 설정',stepIds:[],empty:true},
+  {id:'custom2',icon:'🎯',name:'나만의 코스 2',rec:'탭하여 설정',stepIds:[],empty:true},
 ];
 
 var DEFAULT_APP_SETTINGS = {appName:'디테일링 세차 타이머', location:'워시존 김포IC'};
@@ -839,9 +863,21 @@ function renderSetup(){
   var g=document.getElementById('pgrid');g.innerHTML='';
   courses.forEach(function(c){
     var d=document.createElement('div');
-    d.className='pc'+(selCourse===c.id?' sel':'');
-    d.innerHTML='<div class="pc-check">'+svgChk(10)+'</div><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div><div class="pc-time">'+toHM(getCourseEst(c))+'</div><div class="pc-rec">'+c.rec+'</div>';
-    d.addEventListener('click',function(){selCourse=c.id;renderSetup();updatePreview();});
+    var isEmpty=c.empty&&!c.stepIds.length;
+    d.className='pc'+(selCourse===c.id?' sel':'')+(isEmpty?' custom-slot':'');
+    if(isEmpty){
+      d.innerHTML='<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
+        +'<div class="pc-rec">'+c.rec+'</div>'
+        +'<div class="pc-edit-lbl">✏️ 커스텀 탭에서 편집</div>';
+      d.addEventListener('click',function(){switchRoot('customize');switchCustTab('courses');openCourseModal(c.id,null);});
+    } else {
+      d.innerHTML='<div class="pc-check">'+svgChk(10)+'</div>'
+        +'<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
+        +'<div class="pc-time">'+toHM(getCourseEst(c))+'</div>'
+        +'<div class="pc-flow">'+(c.stepIds||[]).map(function(sid){var s=steps.find(function(x){return x.id===sid;});return s?s.name:'';}).filter(Boolean).join(' → ')+'</div>'
+        +'<div class="pc-rec">'+c.rec+'</div>';
+      d.addEventListener('click',function(){selCourse=c.id;renderSetup();updatePreview();});
+    }
     g.appendChild(d);
   });
   updatePreview();
@@ -1266,6 +1302,9 @@ function renderLogPanel(){
 function deleteHist(id){var h=ls(K_HISTORY,[]).filter(function(r){return r.id!==id;});ss(K_HISTORY,h);renderLogPanel();}
 
 /* ══ DONE ══ */
+function ceil5(min){return Math.ceil(min/5)*5;}
+var pendingTimeUpdate=null;
+
 function showDone(){
   var totalSec=Math.floor((new Date()-sessStart)/1000);
   var totalMin=Math.round(totalSec/60);
@@ -1278,7 +1317,69 @@ function showDone(){
     +'<div class="dstat"><div class="ds-l">예상 대비</div><div class="ds-v">'+diff+'</div></div>'
     +'<div class="dstat"><div class="ds-l">예정 내 완료</div><div class="ds-v">'+fast+'/'+comp+'</div></div>';
   document.getElementById('donestats').innerHTML=h;
+
+  /* 시간 업데이트 제안 */
+  var updateBox=document.getElementById('done-update-box');
+  updateBox.style.display='none';
+  pendingTimeUpdate=null;
+
+  if(selCourse){
+    var changes=activeSteps.filter(function(s,i){
+      return results[i]&&!results[i].skipped&&results[i].min>0;
+    }).map(function(s,_,arr){
+      var i=activeSteps.indexOf(s);
+      var actual=results[i].min;
+      var rounded=ceil5(actual);
+      return{id:s.id,name:s.name,actual:actual,rounded:rounded,current:s.est};
+    }).filter(function(c){return c.rounded!==c.current;});
+
+    if(changes.length>0){
+      pendingTimeUpdate={courseId:selCourse,changes:changes};
+      var newTot=activeSteps.reduce(function(sum,s){
+        var ch=changes.find(function(c){return c.id===s.id;});
+        return sum+(ch?ch.rounded:s.est);
+      },0);
+      document.getElementById('done-update-sub').textContent=
+        '실제 기록을 5분 단위로 올림해서 저장해요. 업데이트 후 예상 총 시간: 약 '+toHM(newTot);
+      var list=document.getElementById('done-step-list');list.innerHTML='';
+      changes.forEach(function(c){
+        var cls=c.rounded<c.current?'color:var(--grn)':c.rounded>c.current?'color:var(--red)':'color:var(--tx3)';
+        var arrow=c.rounded<c.current?'↓':c.rounded>c.current?'↑':'=';
+        list.innerHTML+='<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;background:var(--s2);">'
+          +'<div style="font-size:12px;flex:1;">'+c.name+'</div>'
+          +'<div style="font-size:11px;font-family:var(--mono);color:var(--tx3);text-decoration:line-through;">'+c.current+'분</div>'
+          +'<div style="font-size:11px;'+cls+';">'+arrow+'</div>'
+          +'<div style="font-size:12px;font-family:var(--mono);font-weight:700;'+cls+';">'+c.rounded+'분</div>'
+          +'<div style="font-size:10px;color:var(--tx3);font-family:var(--mono);">(실제 '+c.actual+'분)</div>'
+          +'</div>';
+      });
+      updateBox.style.display='flex';
+    }
+  }
+
   document.getElementById('done-ov').classList.add('show');
+}
+
+function applyTimeUpdate(){
+  if(!pendingTimeUpdate)return;
+  var cid=pendingTimeUpdate.courseId;
+  var changes=pendingTimeUpdate.changes;
+  /* 코스 내 단계의 est 업데이트 */
+  changes.forEach(function(c){
+    var s=steps.find(function(x){return x.id===c.id;});
+    if(s) s.est=c.rounded;
+  });
+  saveSteps();
+  /* 코스 카드 시간 표시도 즉시 갱신 */
+  renderSetup();
+  document.getElementById('done-update-box').style.display='none';
+  pendingTimeUpdate=null;
+  /* 토스트 */
+  var toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;padding:10px 20px;border-radius:20px;z-index:700;box-shadow:0 4px 16px rgba(0,0,0,.15);';
+  toast.textContent='✓ 예상 시간이 업데이트되었어요';
+  document.body.appendChild(toast);
+  setTimeout(function(){toast.remove();},2500);
 }
 
 /* ══ CLOCK ══ */
@@ -1496,7 +1597,9 @@ function openCourseModal(id,e){
   document.getElementById('course-modal-title').textContent=c?'코스 편집':'새 코스 추가';
   document.getElementById('cm-name').value=c?c.name:'';
   document.getElementById('cm-rec').value=c?c.rec:'';
+  var isCustomSlot=id==='custom1'||id==='custom2';
   document.getElementById('cm-delete-btn').style.display=c?'flex':'none';
+  document.getElementById('cm-delete-btn').textContent=isCustomSlot?'비우기':'삭제';
   /* 아이콘 */
   var emojiEl=document.getElementById('cm-emoji');emojiEl.innerHTML='';
   var selIcon=c?c.icon:ICONS[0];
@@ -1531,11 +1634,13 @@ function saveCourse(){
   var icon=selEm?selEm.textContent:ICONS[0];
   var checkedItems=document.querySelectorAll('#cm-steps .step-check-item.checked');
   var stepIds=Array.from(checkedItems).map(function(item){return item.dataset.sid;});
+  var isCustomSlot=editingCourseId==='custom1'||editingCourseId==='custom2';
   var course={
     id:editingCourseId||uid(),
     icon:icon,name:name,
     rec:document.getElementById('cm-rec').value.trim()||'나만의 코스',
-    stepIds:stepIds
+    stepIds:stepIds,
+    empty:false
   };
   if(editingCourseId){
     var idx=courses.findIndex(function(x){return x.id===editingCourseId;});
@@ -1544,12 +1649,21 @@ function saveCourse(){
     courses.push(course);
   }
   saveCourses();renderCoursesList();closeModal('course-modal');renderSetup();
+  /* 나만의 코스 슬롯을 채웠으면 자동 선택 */
+  if(isCustomSlot&&stepIds.length>0){selCourse=course.id;renderSetup();}
 }
 function deleteCourse(){
   if(!editingCourseId)return;
-  if(!confirm('이 코스를 삭제할까요?'))return;
-  courses=courses.filter(function(x){return x.id!==editingCourseId;});
-  if(selCourse===editingCourseId)selCourse=courses.length?courses[0].id:null;
+  var isCustomSlot=editingCourseId==='custom1'||editingCourseId==='custom2';
+  if(isCustomSlot){
+    if(!confirm('나만의 코스를 비울까요?'))return;
+    var idx=courses.findIndex(function(x){return x.id===editingCourseId;});
+    if(idx>=0) courses[idx]=Object.assign(courses[idx],{name:editingCourseId==='custom1'?'나만의 코스 1':'나만의 코스 2',icon:editingCourseId==='custom1'?'⭐':'🎯',rec:'탭하여 설정',stepIds:[],empty:true});
+  } else {
+    if(!confirm('이 코스를 삭제할까요?'))return;
+    courses=courses.filter(function(x){return x.id!==editingCourseId;});
+  }
+  if(selCourse===editingCourseId)selCourse=courses.find(function(c){return !c.empty&&c.stepIds.length;})?courses.find(function(c){return !c.empty&&c.stepIds.length;}).id:null;
   saveCourses();renderCoursesList();closeModal('course-modal');renderSetup();
 }
 
