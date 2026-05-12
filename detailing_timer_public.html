@@ -93,22 +93,25 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .pc-name{font-size:13px;font-weight:700;color:var(--tx);flex:1;min-width:0;}
 .pc.sel .pc-name{color:var(--acc);}
 .pc-time{font-size:11px;color:var(--blue);font-family:var(--mono);margin:2px 0;}
-.pc-flow{font-size:11px;color:var(--tx2);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:2px;}
+.pc-flow{font-size:11px;color:var(--tx2);line-height:1.5;margin-bottom:3px;word-break:keep-all;}
 .pc-rec{font-size:11px;color:var(--ora);}
 .pc-check{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--acc);display:none;align-items:center;justify-content:center;}
 .pc.sel .pc-check{display:flex;}
-.pc.custom-slot{border-style:dashed;border-color:var(--acc);background:var(--acc3);}
-.pc.custom-slot .pc-name{color:var(--acc);}
+.pc.custom-slot{border-style:dashed;border-color:var(--b3);background:var(--s1);}
+.pc.custom-slot .pc-name{color:var(--tx2);}
 .pc.custom-slot .pc-rec{color:var(--tx3);}
-.pc-edit-lbl{font-size:11px;color:var(--acc);font-weight:600;margin-top:4px;}
+.pc-edit-lbl{font-size:11px;color:var(--tx3);font-weight:500;margin-top:4px;}
 
 /* 예약 시간 */
 .bs-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
 .bs-chip{height:32px;padding:0 11px;border-radius:16px;background:var(--s2);border:1.5px solid var(--b2);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;}
 .bs-chip.sel{background:var(--acc2);border-color:var(--acc);color:var(--acc);}
 .bs-adj{display:flex;align-items:center;gap:8px;}
-.bs-adj-btn{height:32px;padding:0 12px;border-radius:8px;background:var(--s2);border:1.5px solid var(--b2);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;}
-.bs-val{font-size:15px;font-weight:700;font-family:var(--mono);color:var(--acc);min-width:60px;text-align:center;}
+.bs-adj-btn{height:36px;padding:0 12px;border-radius:8px;background:var(--s2);border:1.5px solid var(--b2);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;flex-shrink:0;}
+.bs-val-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.bs-val-big{font-size:24px;font-weight:700;font-family:var(--mono);color:var(--acc);min-width:70px;}
+.bs-val-lbl{font-size:11px;color:var(--tx3);font-family:var(--mono);}
+.bs-val-unset{font-size:16px;font-weight:600;font-family:var(--mono);color:var(--tx3);}
 
 /* 옵션 토글 */
 .tog-list{display:flex;flex-direction:column;gap:6px;}
@@ -475,13 +478,18 @@ svg{display:block;}
       </div>
       <div style="margin-bottom:14px;">
         <div class="lbl">예약 시간</div>
-        <div class="bs-chips" id="bs-chips"></div>
-        <div class="bs-adj">
-          <button class="bs-adj-btn" onclick="adjBook(-30)">－30분</button>
-          <div class="bs-val" id="bs-val">미설정</div>
-          <button class="bs-adj-btn" onclick="adjBook(30)">＋30분</button>
-          <button class="bs-adj-btn" onclick="resetBook()">초기화</button>
+        <div class="bs-val-row">
+          <div id="bs-val-wrap">
+            <div class="bs-val-lbl">설정된 예약 시간</div>
+            <div class="bs-val-big" id="bs-val">미설정</div>
+          </div>
+          <div class="bs-adj">
+            <button class="bs-adj-btn" onclick="adjBook(-30)">－30분</button>
+            <button class="bs-adj-btn" onclick="adjBook(30)">＋30분</button>
+            <button class="bs-adj-btn" onclick="resetBook()">초기화</button>
+          </div>
         </div>
+        <div class="bs-chips" id="bs-chips"></div>
       </div>
       <div>
         <div class="lbl">코스 미리보기</div>
@@ -887,20 +895,21 @@ function getActiveSteps(){
   }).filter(Boolean);
 }
 
-/* 코스 핵심 키워드 추출 (최대 5개) */
+/* 코스 핵심 키워드 추출 */
 function getCourseKeywords(c){
-  var skip={prep:1,cleanup:1,'rinse-foam':1,'rinse-acid':1,'rinse-mit':1,final:1,'pre1':1};
+  var skip={prep:1,cleanup:1,'rinse-foam':1,'rinse-acid':1,'rinse-mit':1,final:1};
   var short={
-    interior:'실내',wheel:'휠',alkali:'알칼리',snowfoam:'스노우폼',acid:'산성',
-    mitwash:'미트세차',oilfilm:'유막제거',pekl:'페클','touchless-pre':'습식발수',
+    'pre1':'고압수',interior:'실내',wheel:'휠',alkali:'알칼리',snowfoam:'스노우폼',acid:'산성',
+    mitwash:'미트세차',oilfilm:'유막제거',pekl:'페클','touchless-pre':'습식발수코팅',
     dry:'드라잉','glass-coat':'유리발수','liquid-wax':'물왁스',touchless:'습식발수',
     'solid-wax':'고체왁스',tire:'타이어'
   };
-  var keys=(c.stepIds||[]).filter(function(sid){return !skip[sid];})
-    .map(function(sid){return short[sid]||null;}).filter(Boolean);
-  /* 중복 제거 */
-  var seen={};keys=keys.filter(function(k){if(seen[k])return false;seen[k]=true;return true;});
-  if(keys.length>5) keys=keys.slice(0,4).concat(['…']);
+  var seen={},keys=[];
+  (c.stepIds||[]).forEach(function(sid){
+    if(skip[sid])return;
+    var k=short[sid];
+    if(k&&!seen[k]){seen[k]=true;keys.push(k);}
+  });
   return keys.join(' · ');
 }
 
@@ -960,7 +969,16 @@ function renderOptionPane(){
     btn.addEventListener('click',function(){bookMin=h*60;renderOptionPane();updatePreview();});
     chips.appendChild(btn);
   });
-  document.getElementById('bs-val').textContent=bookMin>0?toHM(bookMin):'미설정';
+  var bsValEl=document.getElementById('bs-val');
+  if(bsValEl){
+    if(bookMin>0){
+      bsValEl.textContent=toHM(bookMin);
+      bsValEl.className='bs-val-big';
+    } else {
+      bsValEl.textContent='미설정';
+      bsValEl.className='bs-val-unset';
+    }
+  }
   updatePreview();
 }
 
