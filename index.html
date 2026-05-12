@@ -1246,13 +1246,21 @@ function goHome(){
 function homeAction(type){
   closeModal('home-modal');
   if(type==='pause'){
-    /* 일시정지 — globalIv 멈추고 현재까지 totalPaused 확정 후 저장 */
     clearInterval(globalIv);clearInterval(stepIv);
-    /* 현재까지 경과된 일시정지 시간을 totalPaused에 완전히 누적 */
     if(isPaused&&pauseStart){ totalPaused+=(Date.now()-pauseStart.getTime()); pauseStart=null; }
-    isPaused=true; /* 홈 이탈 = 일시정지 상태로 표시 */
-    saveSession();
-    isPaused=false; /* 내부 상태 초기화 (배너 등 오작동 방지) */
+    /* wasPaused=true로 저장 — isPaused 조작 없이 직접 저장 */
+    try{
+      sessionStorage.setItem(K_SESSION,JSON.stringify({
+        sessStart:sessStart.getTime(),
+        stepStart:stepStart.getTime(),
+        cur:cur,results:results,
+        selCourse:selCourse,bookMin:bookMin,
+        totalPaused:totalPaused,
+        stepSec:stepSec,
+        wasPaused:true
+      }));
+    }catch(e){}
+    isPaused=false;pauseStart=null;
     relWakeLock();
     showApp(false);
     updateResumeBanner();
@@ -1291,11 +1299,9 @@ function resumeSession(){
   activeSteps=getActiveSteps();
   cur=s.cur||0;results=s.results||{};
   sessStart=new Date(s.sessStart);
-  stepStart=new Date(s.stepStart);   /* 저장된 단계 시작 시각 복원 */
-  totalPaused=s.totalPaused||0;     /* 누적 일시정지 시간 복원 */
-  isPaused=false;
-  pauseStart=null;
-  /* 현재 시각 기준으로 이 단계 경과 시간 재계산 */
+  stepStart=new Date(s.stepStart);
+  totalPaused=s.totalPaused||0;
+  isPaused=false;pauseStart=null;
   stepSec=Math.max(0,Math.floor((Date.now()-stepStart.getTime()-totalPaused)/1000));
   showApp(true);
   renderSteps();updateProg();
@@ -1305,11 +1311,23 @@ function resumeSession(){
   globalIv=setInterval(function(){tickGlobal();saveSession();},1000);tickGlobal();
   scrollToCur();
   updateTimerTabBadge();
-  document.getElementById('paused-banner').className='paused-banner';
-  document.querySelectorAll('.btn-pause-s').forEach(function(b){
-    b.className='btn-pause-s';
-    b.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> 일시정지';
-  });
+
+  if(s.wasPaused){
+    /* 일시정지 상태로 복원 */
+    isPaused=true;
+    pauseStart=new Date();
+    document.getElementById('paused-banner').className='paused-banner on';
+    document.querySelectorAll('.btn-pause-s').forEach(function(b){
+      b.className='btn-pause-s paused';
+      b.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 재개';
+    });
+  } else {
+    document.getElementById('paused-banner').className='paused-banner';
+    document.querySelectorAll('.btn-pause-s').forEach(function(b){
+      b.className='btn-pause-s';
+      b.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> 일시정지';
+    });
+  }
 }
 
 function updateResumeBanner(){
