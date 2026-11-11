@@ -56,7 +56,45 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 }
 .rt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 6px;cursor:pointer;gap:3px;transition:color .15s;}
 .rt-icon{font-size:20px;line-height:1;}
-.rt-lbl{font-size:10px;font-weight:500;color:var(--tx3);}
+.rt-lbl{font-size:10px;font-weight:500;color:var(--tx3);white-space:nowrap;letter-spacing:-.02em;}
+/* 세차장&용품샵 탭 */
+#shop-panel{background:var(--bg);}
+.sh-scroll{flex:1;overflow-y:auto;padding:12px 14px 24px;display:flex;flex-direction:column;gap:16px;}
+.sh-sec .lbl{margin-bottom:8px;}
+.sh-ad{font-size:9.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:4px;padding:1px 5px;font-family:var(--sans);}
+.sh-banner-wrap{position:relative;border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);}
+.sh-banner{display:none;position:relative;min-height:96px;padding:16px;color:#fff;text-decoration:none;background:linear-gradient(135deg,#1d3b6e,#3a7d00);background-size:cover;background-position:center;}
+.sh-banner.on{display:flex;flex-direction:column;justify-content:flex-end;}
+.sh-banner .sh-ad{position:absolute;top:10px;right:10px;}
+.sh-banner-title{font-size:17px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.35);}
+.sh-banner-sub{font-size:12px;opacity:.92;margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,.35);}
+.sh-dots{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:5px;}
+.sh-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);}
+.sh-dots i.on{background:#fff;}
+.sh-slot{border:1.5px dashed var(--b3);border-radius:var(--rl);padding:16px;text-align:center;background:var(--s1);display:flex;flex-direction:column;gap:4px;align-items:center;}
+.sh-slot-t{font-size:13px;font-weight:700;color:var(--tx2);}
+.sh-slot-s{font-size:11px;color:var(--tx3);font-family:var(--mono);}
+.sh-search{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);box-shadow:var(--shadow);padding:12px;display:flex;flex-direction:column;gap:10px;}
+.sh-input{height:42px;border:1.5px solid rgba(0,112,192,.45);border-radius:9px;padding:0 12px;font-size:14px;font-family:var(--sans);background:var(--s1);color:var(--tx);}
+.sh-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2);}
+.sh-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.sh-chip{height:30px;padding:0 11px;border-radius:15px;border:1px solid var(--b2);background:var(--s2);font-size:12px;font-family:var(--sans);color:var(--tx2);cursor:pointer;}
+.sh-chip.sel{border-color:var(--blue);color:var(--blue);background:var(--blue2);font-weight:600;}
+.sh-maps{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.sh-map{height:42px;border-radius:9px;border:none;font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;}
+.sh-map.naver{background:#03c75a;}.sh-map.kakao{background:#fee500;color:#191919;}.sh-map.google{background:#4285f4;}
+.sh-card{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);box-shadow:var(--shadow);padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+.sh-card.sponsored{border-color:rgba(192,96,0,.35);}
+.sh-card-head{display:flex;align-items:center;gap:10px;}
+.sh-card-icon{width:38px;height:38px;border-radius:10px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.sh-card-name{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.sh-card-desc{font-size:11px;color:var(--tx3);margin-top:1px;}
+.sh-card .sh-ad{background:var(--ora);}
+.sh-links{display:flex;flex-wrap:wrap;gap:6px;}
+.sh-link{height:32px;padding:0 12px;border-radius:8px;border:1px solid rgba(0,112,192,.3);background:var(--blue2);color:var(--blue);font-size:12px;font-weight:600;font-family:var(--sans);text-decoration:none;display:inline-flex;align-items:center;gap:4px;cursor:pointer;}
+.sh-link.map{border-color:rgba(3,199,90,.35);background:rgba(3,199,90,.08);color:#028a3e;}
+.sh-foot{font-size:11px;color:var(--tx3);line-height:1.6;text-align:center;padding:4px 6px 0;}
+.sh-foot a{color:var(--blue);}
 .rt.on .rt-lbl{color:var(--acc);}
 .rt-dot{width:5px;height:5px;border-radius:6px;background:var(--acc);display:none;}
 .rt.on .rt-dot{display:block;}
@@ -508,9 +546,18 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .resume-banner-body{flex:1;min-width:0;}
 .resume-banner-title{font-size:14px;font-weight:700;color:var(--acc);}
 .resume-banner-sub{font-size:12px;color:var(--tx2);font-family:var(--mono);margin-top:2px;}
+.btn-end{background:var(--red2);border:1px solid rgba(192,48,0,.3);border-radius:6px;color:var(--red);font-size:12px;font-weight:700;padding:5px 10px;cursor:pointer;font-family:var(--sans);}
+.btn-resume-end{height:40px;padding:0 12px;background:var(--s2);border:1px solid rgba(192,48,0,.3);border-radius:10px;color:var(--red);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);flex-shrink:0;}
+.end-sum{display:flex;background:var(--s2);border:1px solid var(--b1);border-radius:9px;overflow:hidden;margin:4px 0 6px;}
+.end-sum>div{flex:1;text-align:center;padding:8px 0;}
+.end-sum>div+div{border-left:1px solid var(--b1);}
+.end-sum .l{font-size:10px;color:var(--tx3);font-family:var(--mono);}
+.end-sum .v{font-size:15px;font-weight:700;font-family:var(--mono);}
+.log-early{font-size:10px;font-weight:700;color:var(--ora);background:var(--ora2);border-radius:4px;padding:1px 5px;margin-left:4px;}
 .btn-resume{height:40px;padding:0 18px;background:var(--accbtn);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);flex-shrink:0;}
 /* 하단 탭 진행중 표시 */
-.rt-progress{font-size:9px;font-family:var(--mono);color:var(--acc);font-weight:700;}
+.rt-progress{font-size:9px;font-family:var(--mono);color:var(--acc);font-weight:700;white-space:nowrap;}
+.rt-progress.paused{color:var(--ora);}
 
 /* 홈 액션 선택 모달 */
 .home-modal-box{background:var(--s1);border-radius:20px 20px 0 0;padding:20px 18px 36px;width:100%;max-width:500px;}
@@ -553,6 +600,11 @@ svg{display:block;}
     <div class="rt-lbl">설정</div>
     <div class="rt-dot"></div>
   </div>
+  <div class="rt" id="rt-shop" onclick="switchRoot('shop')">
+    <div class="rt-icon">🧽</div>
+    <div class="rt-lbl">세차장&amp;샵</div>
+    <div class="rt-dot"></div>
+  </div>
 </div>
 
 <!-- ════ HOME PANEL (세차설정) ════ -->
@@ -580,6 +632,7 @@ svg{display:block;}
           <div class="resume-banner-title" id="resume-title">세차 진행 중</div>
           <div class="resume-banner-sub" id="resume-sub">—</div>
         </div>
+        <button class="btn-resume-end" onclick="endFromBanner()">종료</button>
         <button class="btn-resume" onclick="resumeSession()">이어하기</button>
       </div>
 
@@ -663,6 +716,7 @@ svg{display:block;}
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <div class="hd-clock" id="hdclock">00:00</div>
+          <button class="btn-end" onclick="openEndModal()">⏹ 종료</button>
           <button class="btn-cfg" onclick="goHome()">🏠 홈</button>
         </div>
       </div>
@@ -705,8 +759,8 @@ svg{display:block;}
 
 <!-- done overlay -->
 <div id="done-ov">
-  <div class="done-icon">✓</div>
-  <div class="done-title">세차 완료! 🎉</div>
+  <div class="done-icon" id="done-icon">✓</div>
+  <div class="done-title" id="done-title">세차 완료! 🎉</div>
   <div class="done-stats" id="donestats"></div>
 
   <!-- 시간 업데이트 박스 -->
@@ -730,6 +784,49 @@ svg{display:block;}
     <p>코스를 눌러 단계·희석·포인트를 확인하세요</p>
   </div>
   <div class="ci-scroll" id="ci-list"></div>
+</div>
+
+<!-- ════ SHOP PANEL (세차장 & 용품샵) ════ -->
+<div class="root-panel" id="shop-panel">
+  <div class="ph">
+    <h2>🧽 세차장 &amp; 용품샵</h2>
+    <p>주변 세차장 찾기 · 자주 가는 매장과 쇼핑몰</p>
+  </div>
+  <div class="sh-scroll">
+    <!-- 광고 슬롯 A: 상단 배너 -->
+    <div id="sh-banner-slot"></div>
+
+    <div class="sh-sec">
+      <div class="lbl">📍 주변 세차장 찾기</div>
+      <div class="sh-search">
+        <input class="sh-input" id="sh-query" type="search" placeholder="검색어 (예: 김포 셀프세차장)" value="셀프세차장" oninput="shopSyncChips()">
+        <div class="sh-chips" id="sh-chips"></div>
+        <div class="sh-maps">
+          <button class="sh-map naver" onclick="openMapSearch('naver')">네이버지도</button>
+          <button class="sh-map kakao" onclick="openMapSearch('kakao')">카카오맵</button>
+          <button class="sh-map google" onclick="openMapSearch('google')">구글지도</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 광고 슬롯 B: 추천·협찬 -->
+    <div class="sh-sec" id="sh-sponsored-sec" style="display:none;">
+      <div class="lbl">⭐ 추천 매장 · 용품</div>
+      <div id="sh-sponsored" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <div class="sh-sec">
+      <div class="lbl">🚿 셀프세차장</div>
+      <div id="sh-washes" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <div class="sh-sec">
+      <div class="lbl">🛒 세차용품샵</div>
+      <div id="sh-shops" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+    <div class="sh-foot" id="sh-foot"></div>
+  </div>
 </div>
 
 <!-- ════ CUSTOMIZE PANEL ════ -->
@@ -828,6 +925,18 @@ svg{display:block;}
   </div>
 </div>
 
+<!-- 세차 종료 모달 -->
+<div class="modal-bg" id="end-modal">
+  <div class="modal-box">
+    <div class="modal-title">⏹ 세차를 종료할까요?</div>
+    <div style="font-size:12px;color:var(--tx3);" id="end-modal-course"></div>
+    <div class="end-sum" id="end-modal-sum"></div>
+    <button class="btn-primary" style="width:100%;" onclick="endSession(true)">기록 저장하고 종료</button>
+    <button class="btn-sec" style="width:100%;color:var(--red);border-color:rgba(192,48,0,.3);" onclick="endSession(false)">기록 없이 종료</button>
+    <button class="btn-sec" style="width:100%;" onclick="closeModal('end-modal')">취소 — 계속 진행</button>
+  </div>
+</div>
+
 <!-- 홈 버튼 액션 선택 모달 -->
 <div class="modal-bg" id="home-modal">
   <div class="home-modal-box">
@@ -845,6 +954,13 @@ svg{display:block;}
       <div class="home-action-body">
         <div class="home-action-name">타이머 유지하며 홈으로</div>
         <div class="home-action-desc">타이머는 계속 흐르고, 타이머 탭에서 바로 돌아올 수 있어요</div>
+      </div>
+    </button>
+    <button class="home-action-btn" onclick="closeModal('home-modal');openEndModal();">
+      <div class="home-action-icon">⏹</div>
+      <div class="home-action-body">
+        <div class="home-action-name">세차 종료</div>
+        <div class="home-action-desc">지금까지 진행한 단계를 기록으로 저장하고 끝내요</div>
       </div>
     </button>
     <button class="home-action-btn danger" onclick="homeAction('reset')">
@@ -1038,7 +1154,7 @@ function makeEl(tag,cls,html){var el=document.createElement(tag);if(cls)el.class
 function svgChk(size,color){return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+(color||'#fff')+'" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';}
 
 /* ══ ROOT TAB ══ */
-var ROOT_TABS=['home','timer','courseinfo','customize'];
+var ROOT_TABS=['home','timer','courseinfo','customize','shop'];
 var suspended=false; /* '일시정지 후 홈으로' 상태: 세션은 저장돼 있고 인터벌은 정지 */
 function setRootUI(tab){
   ROOT_TABS.forEach(function(t){
@@ -1050,10 +1166,11 @@ function switchRoot(tab){
   setRootUI(tab);
   if(tab==='customize') refreshCustomizePanes();
   if(tab==='courseinfo') renderCourseInfoPanel();
+  if(tab==='shop') renderShopPanel();
   if(tab==='home'){ renderSetup(); updateResumeBanner(); }
   if(tab==='timer'){
-    if(sessStart&&suspended&&loadSession()){ resumeSession(); }
-    else if(sessStart){ showApp(true); }
+    if(sessStart&&!suspended){ showApp(true); }
+    else if(loadSession()){ resumeSession(); }   /* 일시정지 후 홈 / 새로고침 후 복귀 */
     else { showApp(false); }
   }
 }
@@ -1516,6 +1633,8 @@ function showApp(show){
 }
 
 function resumeSession(){
+  /* 세션이 메모리에서 실행 중이면 저장본을 다시 불러오지 않고 화면만 전환 */
+  if(sessStart&&!suspended&&activeSteps.length){setRootUI('timer');showApp(true);scrollToCur();updateTimerTabBadge();return;}
   var s=loadSession();
   if(!s)return;
   selCourse=s.selCourse;bookMin=s.bookMin||0;
@@ -1534,7 +1653,6 @@ function resumeSession(){
   clearInterval(globalIv);
   globalIv=setInterval(function(){tickGlobal();saveSession();},1000);tickGlobal();
   scrollToCur();
-  updateTimerTabBadge();
 
   if(s.wasPaused){
     /* 일시정지 상태로 복원 */
@@ -1552,6 +1670,7 @@ function resumeSession(){
       b.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> 일시정지';
     });
   }
+  updateTimerTabBadge();
 }
 
 function updateResumeBanner(){
@@ -1582,17 +1701,21 @@ function getActiveStepsFromCourse(courseId){
 }
 
 function updateTimerTabBadge(){
-  var s=loadSession();
   var prog=document.getElementById('rt-progress');
   if(!prog)return;
-  if(s&&s.sessStart){
-    var done=Object.keys(s.results||{}).length;
-    var tot=getActiveStepsFromCourse(s.selCourse).length;
-    prog.textContent='진행중 '+done+'/'+tot;
-    prog.style.display='block';
+  var done,tot,paused;
+  if(sessStart&&activeSteps.length&&!suspended){
+    /* 메모리의 실제 진행 상태 */
+    done=Object.keys(results||{}).length;tot=activeSteps.length;paused=isPaused;
   } else {
-    prog.style.display='none';
+    var ss=loadSession();
+    if(!ss||!ss.sessStart){prog.style.display='none';return;}
+    done=Object.keys(ss.results||{}).length;tot=getActiveStepsFromCourse(ss.selCourse).length;
+    paused=!!ss.wasPaused||suspended;
   }
+  prog.textContent=(paused?'⏸ 일시정지 ':'▶ 진행중 ')+done+'/'+tot;
+  prog.className='rt-progress'+(paused?' paused':'');
+  prog.style.display='block';
 }
 
 /* ══ START ══ */
@@ -1664,6 +1787,8 @@ function togglePause(){
       ?'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 재개'
       :'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> 일시정지';
   });
+  saveSession();
+  updateTimerTabBadge();
 }
 
 function tickGlobal(){
@@ -1730,16 +1855,19 @@ function completeStep(){
   cur++;stepSec=0;totalPaused=0;
   if(cur>=activeSteps.length){clearInterval(stepIv);renderSteps();updateProg();showDone();return;}
   renderSteps();updateProg();startStepTimer();scrollToCur();
+  updateTimerTabBadge();
 }
 function skipStep(){
   if(cur>=activeSteps.length)return;
   results[cur]={skipped:true};cur++;stepSec=0;totalPaused=0;
   if(cur>=activeSteps.length){clearInterval(stepIv);renderSteps();updateProg();showDone();return;}
   renderSteps();updateProg();startStepTimer();scrollToCur();
+  updateTimerTabBadge();
 }
 function undoStep(){
   if(cur===0)return;cur--;delete results[cur];stepSec=0;totalPaused=0;
   renderSteps();updateProg();startStepTimer();scrollToCur();
+  updateTimerTabBadge();
 }
 function scrollToCur(){setTimeout(function(){var el=document.getElementById('sc-'+cur);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
 
@@ -1843,11 +1971,11 @@ function renderInfoPanel(){
 }
 
 /* ══ HISTORY ══ */
-function saveHistory(){
+function saveHistory(early){
   var totalSec=Math.floor((new Date()-sessStart)/1000);
   var totalMin=Math.round(totalSec/60);
   var c=courses.find(function(x){return x.id===selCourse;});
-  var record={id:sessStart.getTime(),date:sessStart.toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}),startTime:toHHMM(sessStart),endTime:toHHMM(new Date()),courseName:c?c.name:'커스텀',courseIcon:c?c.icon:'🚗',totalMin:totalMin,estMin:activeSteps.reduce(function(a,s){return a+s.est;},0),bookMin:bookMin,steps:activeSteps.map(function(s,i){var r=results[i];return{name:s.name,est:s.est,skipped:r&&r.skipped,actual:r&&!r.skipped?r.min:null};})};
+  var record={id:sessStart.getTime(),date:sessStart.toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}),startTime:toHHMM(sessStart),endTime:toHHMM(new Date()),courseName:c?c.name:'커스텀',courseIcon:c?c.icon:'🚗',endedEarly:!!early,doneCount:Object.keys(results).length,totalMin:totalMin,estMin:activeSteps.reduce(function(a,s){return a+s.est;},0),bookMin:bookMin,steps:activeSteps.map(function(s,i){var r=results[i];return{name:s.name,est:s.est,skipped:r&&r.skipped,actual:r&&!r.skipped?r.min:null};})};
   var history=ls(K_HISTORY,[]);history.unshift(record);if(history.length>50)history=history.slice(0,50);
   ss(K_HISTORY,history);
 }
@@ -1863,7 +1991,7 @@ function renderSetupLogPanel(){
   history.forEach(function(rec){
     var entry=document.createElement('div');entry.className='log-entry';
     var diff=rec.totalMin-rec.estMin;
-    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
+    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+(rec.endedEarly?'<span class="log-early">중도 종료</span>':'')+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
       +'<div class="log-steps">'+rec.steps.map(function(s,i){var delta='',deltaC='';if(!s.skipped&&s.actual){var d=s.actual-s.est;delta=d<=0?'▲'+Math.abs(d)+'분':'▼'+d+'분';deltaC=d<=0?'fast':'slow';}return '<div class="log-step-row"><div class="log-step-n">'+(i+1)+'</div><div class="log-step-name">'+s.name+'</div><div class="log-step-actual">'+(s.skipped?'SKIP':s.actual?s.actual+'분':'—')+'</div><div class="log-step-delta '+deltaC+'">'+delta+'</div></div>';}).join('')
       +'<div class="log-del-btn" onclick="deleteSetupHist('+rec.id+')">이 기록 삭제</div></div>';
     entry.querySelector('.log-head').addEventListener('click',function(){entry.classList.toggle('open');});
@@ -1878,7 +2006,7 @@ function renderLogPanel(){
   if(!history.length){panel.innerHTML='<div class="log-empty"><div style="font-size:36px">🚗</div><div style="font-size:14px;font-family:var(--mono)">아직 기록이 없어요</div></div>';return;}
   history.forEach(function(rec){
     var entry=document.createElement('div');entry.className='log-entry';
-    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
+    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+(rec.endedEarly?'<span class="log-early">중도 종료</span>':'')+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
       +'<div class="log-steps">'+rec.steps.map(function(s,i){var delta='',deltaC='';if(!s.skipped&&s.actual){var d=s.actual-s.est;delta=d<=0?'▲'+Math.abs(d)+'분':'▼'+d+'분';deltaC=d<=0?'fast':'slow';}return '<div class="log-step-row"><div class="log-step-n">'+(i+1)+'</div><div class="log-step-name">'+s.name+'</div><div class="log-step-actual">'+(s.skipped?'SKIP':s.actual?s.actual+'분':'—')+'</div><div class="log-step-delta '+deltaC+'">'+delta+'</div></div>';}).join('')
       +'<div class="log-del-btn" onclick="deleteHist('+rec.id+')">이 기록 삭제</div></div>';
     entry.querySelector('.log-head').addEventListener('click',function(){entry.classList.toggle('open');});
@@ -1894,7 +2022,7 @@ function renderLogPanel(){
   history.forEach(function(rec){
     var entry=document.createElement('div');entry.className='log-entry';
     var diff=rec.totalMin-rec.estMin;
-    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
+    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+(rec.endedEarly?'<span class="log-early">중도 종료</span>':'')+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
       +'<div class="log-steps">'+rec.steps.map(function(s,i){var delta='',deltaC='';if(!s.skipped&&s.actual){var d=s.actual-s.est;delta=d<=0?'▲'+Math.abs(d)+'분':'▼'+d+'분';deltaC=d<=0?'fast':'slow';}return '<div class="log-step-row"><div class="log-step-n">'+(i+1)+'</div><div class="log-step-name">'+s.name+'</div><div class="log-step-actual">'+(s.skipped?'SKIP':s.actual?s.actual+'분':'—')+'</div><div class="log-step-delta '+deltaC+'">'+delta+'</div></div>';}).join('')
       +'<div class="log-del-btn" onclick="deleteHist('+rec.id+')">이 기록 삭제</div></div>';
     entry.querySelector('.log-head').addEventListener('click',function(){entry.classList.toggle('open');});
@@ -1906,20 +2034,24 @@ function renderLogPanel(){
 function ceil5(min){return Math.ceil(min/5)*5;}
 var pendingTimeUpdate=null;
 
-function showDone(){
+function showDone(early){
   var totalSec=Math.floor((new Date()-sessStart)/1000);
   var totalMin=Math.round(totalSec/60);
   var tot=activeSteps.reduce(function(a,s){return a+s.est;},0);
   var comp=Object.values(results).filter(function(r){return !r.skipped;}).length;
   var fast=activeSteps.filter(function(_,i){return results[i]&&!results[i].skipped&&results[i].min<=activeSteps[i].est;}).length;
   var diff=totalMin<=tot?'⚡ '+(tot-totalMin)+'분 단축':'+'+(totalMin-tot)+'분';
-  saveHistory();
+  var handled=Object.keys(results).length;
+  saveHistory(!!early);
   clearSession();
   clearInterval(globalIv);clearInterval(stepIv);
   relWakeLock();sessStart=null;suspended=false;
   updateTimerTabBadge();
+  document.getElementById('done-title').textContent=early?'세차 종료':'세차 완료! 🎉';
+  document.getElementById('done-icon').textContent=early?'⏹':'✓';
   var h='<div class="dstat"><div class="ds-l">총 소요</div><div class="ds-v">'+toHM(totalMin)+'</div></div>'
-    +'<div class="dstat"><div class="ds-l">예상 대비</div><div class="ds-v">'+diff+'</div></div>'
+    +(early?'<div class="dstat"><div class="ds-l">진행 단계</div><div class="ds-v">'+handled+'/'+activeSteps.length+'</div></div>'
+           :'<div class="dstat"><div class="ds-l">예상 대비</div><div class="ds-v">'+diff+'</div></div>')
     +'<div class="dstat"><div class="ds-l">예정 내 완료</div><div class="ds-v">'+fast+'/'+comp+'</div></div>';
   document.getElementById('donestats').innerHTML=h;
 
@@ -2362,6 +2494,164 @@ function closeModal(id){document.getElementById(id).className='modal-bg';}
 document.querySelectorAll('.modal-bg').forEach(function(bg){
   bg.addEventListener('click',function(e){if(e.target===bg)bg.className='modal-bg';});
 });
+
+/* ══ 세차 종료 ══ */
+function openEndModal(){
+  if(!sessStart)return;
+  var c=courses.find(function(x){return x.id===selCourse;});
+  var handled=Object.keys(results).length,tot=activeSteps.length;
+  var el=Math.floor((Date.now()-sessStart.getTime())/60000);
+  document.getElementById('end-modal-course').textContent=(c?c.icon+' '+c.name:'')+(isPaused?' · 일시정지 중':'');
+  document.getElementById('end-modal-sum').innerHTML=
+    '<div><div class="l">진행 단계</div><div class="v">'+handled+'/'+tot+'</div></div>'
+    +'<div><div class="l">경과 시간</div><div class="v">'+toHM(el)+'</div></div>'
+    +'<div><div class="l">남은 단계</div><div class="v">'+Math.max(0,tot-handled)+'</div></div>';
+  openModal('end-modal');
+}
+function endSession(save){
+  closeModal('end-modal');
+  if(!sessStart)return;
+  if(isPaused&&pauseStart){totalPaused+=(Date.now()-pauseStart.getTime());}
+  isPaused=false;pauseStart=null;
+  document.getElementById('paused-banner').className='paused-banner';
+  if(save){
+    showDone(true);
+  } else {
+    homeAction('reset');
+  }
+}
+/* 세차설정 탭 '이어하기' 배너에서 종료: 세션을 불러온 뒤 종료 확인 */
+function endFromBanner(){
+  if(!(sessStart&&!suspended)) resumeSession();
+  openEndModal();
+}
+
+/* ══ 세차장 & 용품샵 ══
+   ▼ 운영 설정: 광고·협찬이 들어오면 아래 SHOP_CONFIG만 수정하면 됩니다.
+   - banners   : 상단 배너 (여러 개면 5초마다 자동 전환). start/end(YYYY-MM-DD)로 노출 기간 지정
+   - sponsored : '추천 매장 · 용품' 카드 (협찬·제휴 링크). 항상 '광고' 표시가 붙습니다
+   - washes / shops : 일반 링크 (광고 아님)
+   - utm       : 외부 링크에 붙는 유입 추적값 (제휴처가 이 앱에서 온 방문을 집계할 수 있음, ''이면 미사용)
+   - contact   : 광고·제휴 문의처 (이메일 'mailto:...' 또는 URL). ''이면 '준비 중'으로 표시
+   - showEmptySlot : 배너가 없을 때 '광고·제휴 배너 영역' 안내를 보일지 여부 */
+var SHOP_CONFIG={
+  utm:'washzone_timer',
+  contact:'',
+  showEmptySlot:true,
+  banners:[
+    /* 예시
+    {title:'겨울 세차 특가',sub:'○○ 셀프세차장 첫 방문 20% 할인',url:'https://example.com',img:'',bg:'linear-gradient(135deg,#0b3a75,#0070c0)',start:'2026-12-01',end:'2026-12-31'},
+    */
+  ],
+  sponsored:[
+    /* 예시
+    {icon:'🧴',name:'○○ 카샴푸',desc:'워시존 타이머 사용자 10% 할인 코드: WASH10',links:[{t:'구매하기',u:'https://example.com'}],start:'',end:''},
+    */
+  ],
+  washes:[
+    {icon:'🚿',name:'워시존',desc:'셀프세차 브랜드 · 전국 지점',links:[{t:'홈페이지',u:'https://www.washzone.co.kr'},{t:'지점·예약',u:'https://www.washzone.shop/?cd=branch'}]},
+    {icon:'📍',name:'워시존 개러지 김포IC점',desc:'자주 가는 세차장',links:[{t:'네이버지도',map:'naver',q:'워시존 개러지 김포IC점'},{t:'카카오맵',map:'kakao',q:'워시존 개러지 김포IC점'}]}
+  ],
+  shops:[
+    {icon:'🎬',name:'세알남',desc:'세차용품 쇼핑몰 · 세차 방법 유튜브',links:[{t:'공식몰',u:'https://saealnam.com'},{t:'스마트스토어',u:'https://smartstore.naver.com/sealnam'},{t:'앱 (iOS)',u:'https://apps.apple.com/kr/app/id1586082907',noUtm:true}]},
+    {icon:'🧪',name:'더클래스',desc:'휠클리너 · 워터에이징 · 카케어 브랜드',links:[{t:'공식몰',u:'https://theclasskorea.co.kr'}]},
+    {icon:'🇮🇹',name:'마프라몰',desc:'라보코스메티카 국내 공식몰',links:[{t:'공식몰',u:'https://maframall.com'}]}
+  ]
+};
+var SHOP_KEYWORDS=['셀프세차장','24시 셀프세차','실내 셀프세차','손세차','디테일링샵','세차용품점'];
+function shopActive(item){
+  var t=new Date().toISOString().slice(0,10);
+  if(item.start&&t<item.start)return false;
+  if(item.end&&t>item.end)return false;
+  return true;
+}
+function withUtm(u,noUtm){
+  if(!SHOP_CONFIG.utm||noUtm||!/^https?:/.test(u))return u;
+  try{var x=new URL(u);if(!x.searchParams.has('utm_source')){x.searchParams.set('utm_source',SHOP_CONFIG.utm);x.searchParams.set('utm_medium','app');}return x.toString();}catch(e){return u;}
+}
+function mapUrl(kind,q){
+  var e=encodeURIComponent(q);
+  if(kind==='kakao')return 'https://map.kakao.com/link/search/'+e;
+  if(kind==='google')return 'https://www.google.com/maps/search/'+e;
+  return 'https://map.naver.com/p/search/'+e;
+}
+/* 새 탭으로만 연다 (noopener 사용 시 window.open은 항상 null을 반환하므로 링크 클릭 방식 사용) */
+function openExt(u){var a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();}
+function openMapSearch(kind){
+  var q=(document.getElementById('sh-query').value||'').trim()||'셀프세차장';
+  openExt(mapUrl(kind,q));
+}
+function shopSyncChips(){
+  var q=(document.getElementById('sh-query').value||'').trim();
+  document.querySelectorAll('#sh-chips .sh-chip').forEach(function(c){c.classList.toggle('sel',c.textContent===q);});
+}
+function shopCard(item,sponsored){
+  var c=document.createElement('div');c.className='sh-card'+(sponsored?' sponsored':'');
+  c.innerHTML='<div class="sh-card-head"><div class="sh-card-icon">'+esc(item.icon||'🔗')+'</div><div style="flex:1;min-width:0;">'
+    +'<div class="sh-card-name">'+esc(item.name)+(sponsored?'<span class="sh-ad">광고</span>':'')+'</div>'
+    +(item.desc?'<div class="sh-card-desc">'+esc(item.desc)+'</div>':'')+'</div></div>';
+  var lk=document.createElement('div');lk.className='sh-links';
+  (item.links||[]).forEach(function(l){
+    var a=document.createElement('a');a.className='sh-link'+(l.map?' map':'');a.target='_blank';
+    a.rel='noopener'+(sponsored?' sponsored':'');
+    a.href=l.map?mapUrl(l.map,l.q||item.name):withUtm(l.u,l.noUtm);
+    a.textContent=(l.map?'📍 ':'↗ ')+l.t;
+    lk.appendChild(a);
+  });
+  c.appendChild(lk);return c;
+}
+var shopBannerIv=null;
+function renderShopBanner(){
+  var slot=document.getElementById('sh-banner-slot');slot.innerHTML='';clearInterval(shopBannerIv);
+  var list=(SHOP_CONFIG.banners||[]).filter(shopActive);
+  if(!list.length){
+    if(SHOP_CONFIG.showEmptySlot){
+      slot.innerHTML='<div class="sh-slot"><div class="sh-slot-t">📢 광고 · 제휴 배너 영역</div><div class="sh-slot-s">세차장 · 용품 브랜드 제휴를 기다리고 있어요</div></div>';
+    }
+    return;
+  }
+  var wrap=document.createElement('div');wrap.className='sh-banner-wrap';
+  list.forEach(function(bn,i){
+    var a=document.createElement('a');a.className='sh-banner'+(i===0?' on':'');a.href=withUtm(bn.url);a.target='_blank';a.rel='noopener sponsored';
+    if(bn.img)a.style.backgroundImage='linear-gradient(0deg,rgba(0,0,0,.45),rgba(0,0,0,0) 70%),url("'+bn.img+'")';
+    else if(bn.bg)a.style.background=bn.bg;
+    a.innerHTML='<span class="sh-ad">광고</span><div class="sh-banner-title">'+esc(bn.title||'')+'</div>'+(bn.sub?'<div class="sh-banner-sub">'+esc(bn.sub)+'</div>':'');
+    wrap.appendChild(a);
+  });
+  if(list.length>1){
+    var dots=document.createElement('div');dots.className='sh-dots';
+    list.forEach(function(_,i){var d=document.createElement('i');if(i===0)d.className='on';dots.appendChild(d);});
+    wrap.appendChild(dots);
+    var idx=0;
+    shopBannerIv=setInterval(function(){
+      var bs=wrap.querySelectorAll('.sh-banner'),ds=wrap.querySelectorAll('.sh-dots i');
+      bs[idx].classList.remove('on');ds[idx].classList.remove('on');
+      idx=(idx+1)%bs.length;bs[idx].classList.add('on');ds[idx].classList.add('on');
+    },5000);
+  }
+  slot.appendChild(wrap);
+}
+function renderShopPanel(){
+  renderShopBanner();
+  var ch=document.getElementById('sh-chips');
+  if(!ch.childNodes.length){
+    SHOP_KEYWORDS.forEach(function(k){
+      var b=document.createElement('button');b.className='sh-chip';b.textContent=k;
+      b.addEventListener('click',function(){document.getElementById('sh-query').value=k;shopSyncChips();});
+      ch.appendChild(b);
+    });
+  }
+  shopSyncChips();
+  var sp=(SHOP_CONFIG.sponsored||[]).filter(shopActive);
+  var spSec=document.getElementById('sh-sponsored-sec'),spBox=document.getElementById('sh-sponsored');
+  spBox.innerHTML='';spSec.style.display=sp.length?'':'none';
+  sp.forEach(function(it){spBox.appendChild(shopCard(it,true));});
+  var w=document.getElementById('sh-washes');w.innerHTML='';SHOP_CONFIG.washes.forEach(function(it){w.appendChild(shopCard(it,false));});
+  var s2=document.getElementById('sh-shops');s2.innerHTML='';SHOP_CONFIG.shops.forEach(function(it){s2.appendChild(shopCard(it,false));});
+  var c=SHOP_CONFIG.contact;
+  document.getElementById('sh-foot').innerHTML='\'광고\' 표시가 있는 항목은 제휴·협찬 콘텐츠입니다.<br>광고·제휴 문의: '
+    +(c?'<a href="'+esc(c)+'" target="_blank" rel="noopener">'+esc(c.replace(/^mailto:/,''))+'</a>':'준비 중');
+}
 
 /* ════ INIT ════ */
 (function(){
