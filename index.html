@@ -74,8 +74,17 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 #timer-panel{background:var(--bg);}
 
 /* setup screen */
-#setup{position:absolute;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding-bottom:60px;}
-.setup-hd{background:var(--s1);border-bottom:1px solid var(--b2);padding:16px 20px 0;flex-shrink:0;}
+#home-panel{background:var(--bg);}
+#setup{flex:1;min-height:0;background:var(--bg);display:flex;flex-direction:column;}
+.home-scroll{flex:1;overflow-y:auto;padding:14px 16px 130px;display:flex;flex-direction:column;gap:18px;}
+.home-sec .lbl{margin-bottom:8px;}
+/* 타이머 대기 화면 */
+#timer-idle{flex:1;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:14px;}
+.idle-card{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);box-shadow:var(--shadow);padding:28px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;}
+.idle-icon{font-size:36px;}
+.idle-title{font-size:15px;font-weight:700;}
+.idle-sub{font-size:12px;color:var(--tx3);font-family:var(--mono);}
+.setup-hd{background:var(--s1);border-bottom:1px solid var(--b2);padding:14px 20px 8px;flex-shrink:0;box-shadow:var(--shadow);}
 .setup-hd h1{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px;}
 .setup-hd p{font-size:12px;color:var(--tx3);font-family:var(--mono);}
 .setup-tabs{display:flex;margin-top:10px;}
@@ -101,6 +110,46 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .pc.custom-slot .pc-name{color:var(--tx2);}
 .pc.custom-slot .pc-rec{color:var(--tx3);}
 .pc-edit-lbl{font-size:11px;color:var(--tx3);font-weight:500;margin-top:4px;}
+.pc{padding-bottom:34px;}
+.pc.custom-slot{padding-bottom:12px;}
+.pc-info{position:absolute;right:8px;bottom:8px;height:24px;padding:0 9px;border-radius:12px;background:var(--s2);border:1px solid var(--b2);font-size:11px;font-weight:600;color:var(--tx2);font-family:var(--sans);cursor:pointer;display:flex;align-items:center;gap:3px;}
+.pc.sel .pc-info{background:var(--s1);border-color:rgba(58,125,0,.35);color:var(--acc);}
+/* 코스정보 탭 */
+#courseinfo-panel{background:var(--bg);}
+.ci-scroll{flex:1;overflow-y:auto;padding:12px 14px 20px;display:flex;flex-direction:column;gap:10px;}
+.ci-card{flex-shrink:0;background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);}
+.ci-card.sel{border-color:var(--acc);}
+.ci-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
+.ci-icon{font-size:22px;flex-shrink:0;}
+.ci-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.ci-sub{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-top:2px;}
+.ci-badge{font-size:10px;font-weight:700;color:var(--acc);background:var(--acc2);border:1px solid rgba(58,125,0,.25);border-radius:4px;padding:1px 6px;font-family:var(--sans);}
+.ci-body{display:none;flex-direction:column;gap:8px;padding:0 12px 12px;border-top:1px solid var(--b1);padding-top:10px;}
+.ci-card.open .ci-body{display:flex;}
+.ci-card.open .cd-chev.ci-chev{transform:rotate(180deg);}
+.ci-note{font-size:11px;color:var(--ora);font-family:var(--mono);text-align:center;}
+/* 코스 상세 */
+.cd-sum{display:flex;background:var(--s2);border:1px solid var(--b1);border-radius:9px;overflow:hidden;}
+.cd-sum-item{flex:1;padding:7px 0;text-align:center;}
+.cd-sum-item+.cd-sum-item{border-left:1px solid var(--b1);}
+.cd-sum-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);margin-bottom:1px;}
+.cd-sum-val{font-size:14px;font-weight:700;font-family:var(--mono);color:var(--tx);}
+.cd-sum-val.ok{color:var(--grn);}.cd-sum-val.warn{color:var(--red);}
+.cd-list{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);}
+.cd-row{border-bottom:1px solid var(--b1);}
+.cd-row:last-child{border-bottom:none;}
+.cd-row-head{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;}
+.cd-n{font-family:var(--mono);font-size:11px;color:var(--tx3);width:20px;flex-shrink:0;text-align:center;}
+.cd-name{font-size:13px;font-weight:600;flex:1;min-width:0;}
+.cd-dil{font-size:11px;font-family:var(--mono);color:var(--blue);background:var(--blue2);border:1px solid rgba(0,112,192,.2);border-radius:4px;padding:1px 6px;flex-shrink:0;}
+.cd-est{font-size:11px;font-family:var(--mono);color:var(--tx3);flex-shrink:0;min-width:32px;text-align:right;}
+.cd-chev{color:var(--tx3);transition:transform .2s;flex-shrink:0;}
+.cd-row.open .cd-chev{transform:rotate(180deg);}
+.cd-body{display:none;flex-direction:column;gap:5px;padding:0 12px 10px 40px;}
+.cd-row.open .cd-body{display:flex;}
+.cd-line{font-size:12px;color:var(--tx2);line-height:1.5;}
+.cd-line b{color:var(--tx);}
+.cd-empty{font-size:12px;color:var(--tx3);font-family:var(--mono);padding:14px;text-align:center;}
 
 /* 예약 시간 */
 .bs-chips{display:grid;grid-template-columns:repeat(3,auto);gap:5px;justify-content:start;margin-bottom:8px;}
@@ -270,9 +319,32 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .dil-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px 5px;}
 .dil-card-name{font-size:14px;font-weight:700;flex:1;}
 .dil-card-ratio{font-size:13px;font-family:var(--mono);color:var(--blue);background:var(--blue2);border:1px solid rgba(0,112,192,.2);border-radius:5px;padding:2px 8px;}
+.dil-card-ratio.custom{color:var(--ora);background:var(--ora2);border-color:rgba(192,96,0,.3);}
+.dil-card.has-custom{border-color:rgba(192,96,0,.35);}
+.dil-card-note{font-size:11px;color:var(--tx3);padding:0 14px 10px;margin-top:-4px;}
+.dil-src{font-size:9.5px;font-weight:700;font-family:var(--sans);letter-spacing:0;text-transform:none;border-radius:4px;padding:1px 5px;}
+.dil-src.def{color:var(--tx3);background:var(--s2);border:1px solid var(--b2);}
+.dil-src.custom{color:var(--ora);background:var(--ora2);border:1px solid rgba(192,96,0,.3);}
+.dil-src.auto{color:var(--tx3);background:transparent;border:1px dashed var(--b3);}
+.dil-src.off{color:var(--tx3);background:transparent;border:none;font-weight:500;}
+.dil-vessel-btn.is-def::after{content:'기본';font-size:9px;font-weight:700;margin-left:4px;color:var(--tx3);}
+.dil-vessel-btn.sel.is-def::after{color:var(--blue);}
+.dil-edit{position:relative;background:var(--s1);border:1.5px solid rgba(0,112,192,.45);border-radius:8px;padding:0 8px;height:40px;cursor:text;box-shadow:inset 0 1px 2px rgba(0,0,0,.04);}
+.dil-edit:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2);}
+.dil-edit .dil-vol-input{background:transparent!important;border:none!important;height:100%;padding:0 2px;color:var(--tx);font-weight:600;}
+.dil-edit .dil-vol-input::placeholder{color:var(--tx3);font-weight:400;font-size:12px;font-family:var(--sans);}
+.dil-edit.custom{border-color:var(--ora);background:#fff8f1;}
+.dil-edit.custom .dil-vol-input{color:var(--ora);}
+.dil-pen{font-size:12px;color:var(--blue);opacity:.7;flex-shrink:0;}
+.dil-edit.custom .dil-pen{color:var(--ora);}
+.dil-field-reset{margin-left:auto;height:18px;min-width:22px;border-radius:9px;border:1px solid rgba(192,96,0,.35);background:var(--ora2);color:var(--ora);font-size:11px;font-weight:700;cursor:pointer;line-height:1;}
+.dil-def-hint{font-size:10px;color:var(--tx3);font-family:var(--mono);margin-top:3px;text-align:right;}
+.dil-reset-all{margin:-4px 14px 14px;height:34px;border-radius:8px;border:1px solid rgba(192,96,0,.35);background:var(--ora2);color:var(--ora);font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;width:calc(100% - 28px);}
+.dil-legend{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:11px;color:var(--tx3);margin:-2px 0 10px;align-items:center;}
+.dil-legend span.lg{display:inline-flex;align-items:center;gap:4px;}
 .dil-card-prod{font-size:11px;color:var(--tx2);padding:0 14px 8px;}
 .dil-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px;}
-.dil-ctrl-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.05em;margin-bottom:5px;text-transform:uppercase;}
+.dil-ctrl-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.05em;margin-bottom:5px;text-transform:uppercase;display:flex;align-items:center;gap:6px;min-height:18px;}
 .dil-vessel-group{display:flex;gap:5px;flex-wrap:wrap;}
 .dil-vessel-btn{padding:6px 10px;border-radius:7px;font-size:12px;font-weight:500;background:var(--s2);border:1.5px solid var(--b2);color:var(--tx2);cursor:pointer;}
 .dil-vessel-btn.sel{background:var(--blue2);border-color:var(--blue);color:var(--blue);}
@@ -281,7 +353,7 @@ textarea{resize:vertical;min-height:60px;line-height:1.5;}
 .dil-vol-input::-webkit-outer-spin-button,.dil-vol-input::-webkit-inner-spin-button{-webkit-appearance:none;}
 .dil-vol-input:focus{outline:none;border-color:var(--blue);}
 .dil-vol-unit{font-size:12px;color:var(--tx3);font-family:var(--mono);}
-.dil-result{margin:0 14px 14px;display:flex;background:var(--s2);border:1px solid var(--b2);border-radius:9px;overflow:hidden;}
+.dil-result{margin:0 14px 14px;display:flex;background:var(--s3);border:1px solid var(--b1);border-radius:9px;overflow:hidden;}
 .dil-res-item{flex:1;padding:9px 0;text-align:center;}
 .dil-res-item+.dil-res-item{border-left:1px solid var(--b1);}
 .dil-res-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);margin-bottom:2px;}
@@ -461,20 +533,30 @@ svg{display:block;}
 
 <!-- ════ ROOT TAB BAR ════ -->
 <div id="root-tabs">
-  <div class="rt on" id="rt-timer" onclick="switchRoot('timer')">
+  <div class="rt on" id="rt-home" onclick="switchRoot('home')">
+    <div class="rt-icon">🏠</div>
+    <div class="rt-lbl">세차설정</div>
+    <div class="rt-dot"></div>
+  </div>
+  <div class="rt" id="rt-timer" onclick="switchRoot('timer')">
     <div class="rt-icon">⏱</div>
     <div class="rt-lbl">타이머</div>
     <div class="rt-progress" id="rt-progress" style="display:none;"></div>
   </div>
+  <div class="rt" id="rt-courseinfo" onclick="switchRoot('courseinfo')">
+    <div class="rt-icon">📋</div>
+    <div class="rt-lbl">코스정보</div>
+    <div class="rt-dot"></div>
+  </div>
   <div class="rt" id="rt-customize" onclick="switchRoot('customize')">
     <div class="rt-icon">⚙️</div>
-    <div class="rt-lbl">커스텀</div>
+    <div class="rt-lbl">설정</div>
     <div class="rt-dot"></div>
   </div>
 </div>
 
-<!-- ════ TIMER PANEL ════ -->
-<div class="root-panel on" id="timer-panel">
+<!-- ════ HOME PANEL (세차설정) ════ -->
+<div class="root-panel on" id="home-panel">
 
   <!-- Setup Screen -->
   <div id="setup">
@@ -483,23 +565,16 @@ svg{display:block;}
         <div style="display:flex;align-items:center;gap:10px;">
           <img src="data:image/png;base64,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" style="width:44px;height:44px;object-fit:cover;flex-shrink:0;">
           <div>
-            <h1 id="setup-title" style="font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px;">디테일링 세차 타이머</h1>
-            <p id="setup-subtitle" style="font-size:11px;color:var(--tx3);font-family:var(--mono);">워시존 개러지 김포IC점</p>
+            <h1 id="setup-title" style="font-size:17px;font-weight:700;letter-spacing:-.01em;margin:0;">디테일링 세차 타이머</h1>
           </div>
         </div>
         <div style="font-size:10px;color:var(--tx3);font-family:var(--mono);text-align:right;line-height:1.5;flex-shrink:0;">made by<br><span style="font-weight:700;color:var(--tx2);letter-spacing:.05em;">DAZZ</span></div>
       </div>
-      <div class="setup-tabs">
-        <div class="setup-tab on" id="stab-course" onclick="switchSetupTab('course')">코스 선택</div>
-        <div class="setup-tab" id="stab-option" onclick="switchSetupTab('option')">옵션</div>
-        <div class="setup-tab" id="stab-dil" onclick="switchSetupTab('dil')">희석</div>
-        <div class="setup-tab" id="stab-log" onclick="switchSetupTab('log')">📋 기록</div>
-      </div>
     </div>
 
-    <!-- 코스 선택 -->
-    <div class="setup-pane on" id="spane-course">
-      <div id="resume-banner" style="display:none;" class="resume-banner">
+    <!-- 세차설정 단일 스크롤 페이지 -->
+    <div class="home-scroll" id="home-scroll">
+      <div id="resume-banner" style="display:none;margin-bottom:0;" class="resume-banner">
         <div class="resume-banner-icon">▶️</div>
         <div class="resume-banner-body">
           <div class="resume-banner-title" id="resume-title">세차 진행 중</div>
@@ -507,21 +582,9 @@ svg{display:block;}
         </div>
         <button class="btn-resume" onclick="resumeSession()">이어하기</button>
       </div>
-      <div class="lbl" style="margin-top:2px;">저장된 코스</div>
-      <div class="preset-grid" id="pgrid"></div>
-    </div>
 
-    <!-- 옵션 -->
-    <div class="setup-pane" id="spane-option">
-      <div style="margin-bottom:14px;">
-        <div class="lbl">코스 선택</div>
-        <div class="preset-grid" id="pgrid2"></div>
-        <div id="sel-course-banner" style="display:none;background:var(--acc2);border:1.5px solid var(--acc);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:10px;margin-top:6px;">
-          <span id="scb-icon" style="font-size:20px;"></span>
-          <div><div id="scb-name" style="font-size:14px;font-weight:700;color:var(--acc);"></div><div id="scb-sub" style="font-size:11px;color:var(--tx3);font-family:var(--mono);"></div></div>
-        </div>
-      </div>
-      <div style="margin-bottom:14px;">
+      <!-- 1. 예약 시간 -->
+      <div class="home-sec">
         <div class="lbl">예약 시간</div>
         <div style="display:flex;align-items:flex-start;gap:10px;">
           <div style="flex-shrink:0;min-width:72px;">
@@ -539,20 +602,29 @@ svg{display:block;}
           </div>
         </div>
       </div>
-      <div>
-        <div class="lbl">코스 미리보기</div>
-        <div class="prev-wrap" id="prevlist"></div>
+
+      <!-- 2. 희석 비율 -->
+      <div class="home-sec">
+        <div class="lbl">희석 비율</div>
+        <div class="dil-legend">
+          <span class="lg"><span class="dil-src def">기본값</span>설정 탭의 약제 값</span>
+          <span class="lg"><span class="dil-src custom">직접입력</span>여기서 바꾼 값</span>
+          <span class="lg"><span class="dil-pen">✎</span>흰 칸은 입력 가능</span>
+        </div>
+        <div id="dil-setup-grid" style="display:flex;flex-direction:column;gap:12px;"></div>
       </div>
-    </div>
 
-    <!-- 희석 -->
-    <div class="setup-pane" id="spane-dil">
-      <div id="dil-setup-grid" style="display:flex;flex-direction:column;gap:12px;"></div>
-    </div>
+      <!-- 3. 코스 선택 -->
+      <div class="home-sec">
+        <div class="lbl">코스 선택</div>
+        <div class="preset-grid" id="pgrid" style="margin-bottom:0;"></div>
+      </div>
 
-    <!-- 기록 -->
-    <div class="setup-pane" id="spane-log" style="padding-bottom:20px;">
-      <div id="setup-log-panel" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <!-- 4. 선택한 코스 구성 -->
+      <div class="home-sec" id="course-detail-sec">
+        <div class="lbl" id="course-detail-lbl" style="text-transform:none;">선택한 코스 구성</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="course-detail-inline"></div>
+      </div>
     </div>
 
     <div class="setup-cta" id="setup-cta">
@@ -561,6 +633,24 @@ svg{display:block;}
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         세차 시작
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TIMER PANEL ════ -->
+<div class="root-panel" id="timer-panel">
+
+  <!-- 대기 화면 (진행 중 세션 없음) -->
+  <div id="timer-idle">
+    <div class="idle-card">
+      <div class="idle-icon">⏱</div>
+      <div class="idle-title">진행 중인 세차가 없어요</div>
+      <div class="idle-sub">세차설정 탭에서 코스를 고르고 시작하세요</div>
+      <button class="btn-primary" style="margin-top:4px;" onclick="switchRoot('home')">🏠 세차설정으로 이동</button>
+    </div>
+    <div>
+      <div class="lbl">📋 세차 기록</div>
+      <div id="setup-log-panel" style="display:flex;flex-direction:column;gap:6px;"></div>
     </div>
   </div>
 
@@ -630,13 +720,22 @@ svg{display:block;}
     </div>
   </div>
 
-  <button class="btn-ok" onclick="document.getElementById('done-ov').classList.remove('show')">확인</button>
+  <button class="btn-ok" onclick="document.getElementById('done-ov').classList.remove('show');showApp(false);switchRoot('home');">확인</button>
+</div>
+
+<!-- ════ COURSE INFO PANEL ════ -->
+<div class="root-panel" id="courseinfo-panel">
+  <div class="ph">
+    <h2>📋 코스 정보</h2>
+    <p>코스를 눌러 단계·희석·포인트를 확인하세요</p>
+  </div>
+  <div class="ci-scroll" id="ci-list"></div>
 </div>
 
 <!-- ════ CUSTOMIZE PANEL ════ -->
 <div class="root-panel" id="customize-panel">
   <div class="ph">
-    <h2>⚙️ 커스터마이징</h2>
+    <h2>⚙️ 설정</h2>
     <p>단계·약제·코스를 자유롭게 편집하세요</p>
   </div>
   <div class="cust-tabs">
@@ -701,10 +800,6 @@ svg{display:block;}
         <div class="field-label">앱 이름</div>
         <input type="text" id="setting-appname" placeholder="예: 내 세차 루틴" oninput="saveAppSettings()">
       </div>
-      <div class="field-group">
-        <div class="field-label">장소 이름</div>
-        <input type="text" id="setting-location" placeholder="예: 내 세차장" oninput="saveAppSettings()">
-      </div>
     </div>
 
     <div class="danger-zone">
@@ -715,10 +810,28 @@ svg{display:block;}
   </div>
 </div>
 
+<!-- 코스 정보 모달 -->
+<div class="modal-bg" id="course-info-modal">
+  <div class="modal-box">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="ci-icon" style="font-size:26px;"></div>
+      <div style="flex:1;min-width:0;">
+        <div class="modal-title" id="ci-name"></div>
+        <div style="font-size:12px;color:var(--tx3);font-family:var(--mono);" id="ci-rec"></div>
+      </div>
+    </div>
+    <div id="ci-body" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <div class="modal-actions">
+      <button class="btn-sec" style="flex:1;" onclick="closeModal('course-info-modal')">닫기</button>
+      <button class="btn-primary" style="flex:2;" id="ci-select-btn">이 코스로 선택</button>
+    </div>
+  </div>
+</div>
+
 <!-- 홈 버튼 액션 선택 모달 -->
 <div class="modal-bg" id="home-modal">
   <div class="home-modal-box">
-    <div class="home-modal-title">홈으로 돌아가기</div>
+    <div class="home-modal-title">세차설정으로 돌아가기</div>
     <div class="home-modal-sub" id="home-modal-sub">현재 세차 진행 중</div>
     <button class="home-action-btn" onclick="homeAction('pause')">
       <div class="home-action-icon">⏸</div>
@@ -832,7 +945,7 @@ svg{display:block;}
 var DEFAULT_STEPS = [
   {id:'prep',name:'세차 준비',prod:'장비 꺼내기 · 세팅',est:5,productId:null,pts:['장비 꺼내서 세팅','약품 준비 및 희석액 만들기','세차장 환경 확인']},
   {id:'interior',name:'실내 세차',prod:'청소기 · 에어건 · 타월',est:15,productId:null,pts:['매트 분리 후 청소기 작업','에어건으로 틈새·시트 먼지 제거','내부 유리 타월 마무리']},
-  {id:'wheel',name:'휠·타이어 세척',prod:'더클래스 다이나믹 휠클리너',est:20,productId:'wheel',pts:['폼 압축분무기 사용','휠 안쪽까지 꼼꼼히','타이어 사이드월 함께']},
+  {id:'wheel',name:'휠·타이어 세척',prod:'더클래스 다이나믹 휠클리너 익스트렉트 S',est:20,productId:'wheel',pts:['폼 압축분무기 사용','휠 안쪽까지 꼼꼼히','타이어 사이드월 함께']},
   {id:'pre1',name:'고압수 프리워시 + 하부',prod:'세차장 고압수',est:10,productId:null,pts:['하부 집중 고압','큰 오염·새똥 우선 제거','위에서 아래']},
   {id:'alkali',name:'알칼리 프리워시',prod:'Labocosmetica Primus 2.0',est:10,productId:'alkali',pts:['하단부 집중','드웰 1~2분 후 다음 단계']},
   {id:'snowfoam',name:'스노우폼',prod:'세차장 폼랜스 + 카샴푸',est:5,productId:null,pts:['전체 도포 후 5분 드웰링','건조하지 않게 주의']},
@@ -844,27 +957,31 @@ var DEFAULT_STEPS = [
   {id:'oilfilm',name:'유리 유막 제거',prod:'더클래스 유막제거제 · 광택기',est:20,productId:null,pts:['물기 완전 제거 후 작업','어플리케이터 원형 도포','광택기 저속']},
   {id:'pekl',name:'페인트 클렌징 (페클)',prod:'더클래스 화이트닝샷 · 광택기',est:20,productId:null,pts:['뒤펜더·하단 집중','광택기 저속','타월로 닦아내기']},
   {id:'final',name:'최종 고압수 헹굼',prod:'세차장 고압수',est:5,productId:null,pts:['전체 최종 헹굼']},
-  {id:'touchless-pre',name:'습식 발수코팅 (헹굼 직후)',prod:'더클래스 워터에이징',est:10,productId:'touchless',pts:['고압수 헹굼 직후 도포','드라잉 전 적용']},
+  {id:'touchless-pre',name:'습식 발수코팅 (헹굼 직후)',prod:'더클래스 워터에이징 익스트렉트 S',est:10,productId:'touchless',pts:['젖은 차체에 분사 (드라잉 전)','보닛은 마지막에 분사','분사 순서대로 바로 고압수 헹굼']},
   {id:'dry',name:'드라잉',prod:'아이버스트 · 에어건 · 드라잉 타월',est:20,productId:null,pts:['아이버스트로 큰 물기 제거','틈새·도어 엣지 에어건']},
   {id:'glass-coat',name:'유리 발수 코팅',prod:'MOTIVE X 유리 발수코팅제',est:20,productId:null,pts:['물기 완전 제거 후 작업','얇고 균일하게 도포']},
   {id:'liquid-wax',name:'물왁스',prod:'불렛 L001 퍼포먼스',est:20,productId:null,pts:['얇게 도포 후 닦아내기']},
-  {id:'touchless',name:'습식 발수코팅',prod:'더클래스 워터에이징',est:10,productId:'touchless',pts:['드라잉 후 적용']},
+  {id:'touchless',name:'습식 발수코팅',prod:'더클래스 워터에이징 익스트렉트 S',est:10,productId:'touchless',pts:['젖은 차체에 분사 (드라잉 전)','분사 후 바로 고압수 헹굼','헹굼 후 꼼꼼히 드라잉']},
   {id:'solid-wax',name:'고체왁스',prod:'소프트99 격방수 · 광택기',est:30,productId:null,pts:['두껍게 바르지 않기','광택기 저속']},
   {id:'tire',name:'타이어 광택제',prod:'더클래스 매트블랙',est:10,productId:null,pts:['완전 건조 후 적용','사이드월 전체 균일']},
   {id:'cleanup',name:'장비 정리',prod:'세척 · 정리 · 최종 확인',est:10,productId:null,pts:['사용 장비 전체 세척','약품 정리 및 수납']},
 ];
 
 var DEFAULT_PRODUCTS = [
-  {id:'wheel',name:'휠·타이어 세척',prod:'다이나믹 휠클리너 익스트랙트 S',vessel:'폼 압축분무기',defaultVol:400,
-   levels:[{label:'약(1:10)',ratio:10},{label:'보통(1:5)',ratio:5},{label:'심(1:3)',ratio:3}],defaultLevel:0},
+  {id:'wheel',name:'휠·타이어 세척',prod:'더클래스 다이나믹 휠클리너 익스트렉트 S',vessel:'폼 압축분무기',defaultVol:240,
+   levels:[{label:'약한 오염(1:10)',ratio:10},{label:'보통 오염(1:5)',ratio:5},{label:'심한 오염(1:3)',ratio:3}],defaultLevel:1,
+   note:'물 200ml 기준 원액 20 / 40 / 67ml'},
   {id:'alkali',name:'알칼리 프리워시',prod:'Labocosmetica Primus 2.0',vessel:'압축분무기',defaultVol:2000,
-   levels:[{label:'약(1:100)',ratio:100},{label:'중(1:80)',ratio:80},{label:'강(1:50)',ratio:50}],defaultLevel:0},
+   levels:[{label:'약한 오염(1:100)',ratio:100},{label:'중간 오염(1:80)',ratio:80},{label:'강한 오염(1:50)',ratio:50}],defaultLevel:1,
+   note:'약한: 세차 2주 이내 · 중간: 4주 이내 · 강한: 2달 이상'},
   {id:'acid',name:'산성 프리워시',prod:'Labocosmetica Purifica',vessel:'압축분무기',defaultVol:2000,
-   levels:[{label:'약(1:200)',ratio:200},{label:'중(1:150)',ratio:150},{label:'강(1:100)',ratio:100}],defaultLevel:0},
+   levels:[{label:'약한 오염(1:200)',ratio:200},{label:'중간 오염(1:150)',ratio:150},{label:'강한 오염(1:100)',ratio:100}],defaultLevel:1,
+   note:'분무기 권장 범위 1:100 ~ 1:200'},
   {id:'mitwash',name:'카샴푸 미트세차',prod:'Labocosmetica Semper',vessel:'버킷',defaultVol:18000,
-   levels:[{label:'약(1:1200)',ratio:1200},{label:'중(1:1000)',ratio:1000},{label:'강(1:800)',ratio:800}],defaultLevel:1},
-  {id:'touchless',name:'습식 발수코팅',prod:'워터에이징 익스트렉트 S',vessel:'압축분무기',defaultVol:2000,
-   levels:[{label:'일반(1:200)',ratio:200},{label:'퍼포먼스(1:100)',ratio:100}],defaultLevel:0},
+   levels:[{label:'약한 오염(1:1200)',ratio:1200},{label:'중간 오염(1:1000)',ratio:1000},{label:'강한 오염(1:800)',ratio:800}],defaultLevel:1},
+  {id:'touchless',name:'습식 발수코팅',prod:'더클래스 워터에이징 익스트렉트 S',vessel:'압축분무기',defaultVol:2000,
+   levels:[{label:'일반(1:200)',ratio:200},{label:'퍼포먼스(1:100)',ratio:100}],defaultLevel:0,
+   note:'처음 사용은 1:200 권장 · 최상 성능은 1:100'},
 ];
 
 var DEFAULT_COURSES = [
@@ -910,6 +1027,8 @@ function saveCourses(){ss(K_COURSES,courses);}
 function saveDilSettings(){ss(K_DIL,dilSettings);}
 
 /* ══ HELPERS ══ */
+/* 기본 선택 레벨 = 중간값 (3개→2번째, 2개→1번째 '일반', 1개→1번째) */
+function midLevel(levels){return Math.max(0,Math.floor(((levels||[]).length-1)/2));}
 function pad(n){return String(n).padStart(2,'0');}
 function toHHMM(d){return pad(d.getHours())+':'+pad(d.getMinutes());}
 function toMMSS(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
@@ -919,52 +1038,42 @@ function makeEl(tag,cls,html){var el=document.createElement(tag);if(cls)el.class
 function svgChk(size,color){return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="'+(color||'#fff')+'" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';}
 
 /* ══ ROOT TAB ══ */
-function switchRoot(tab){
-  ['timer','customize'].forEach(function(t){
+var ROOT_TABS=['home','timer','courseinfo','customize'];
+var suspended=false; /* '일시정지 후 홈으로' 상태: 세션은 저장돼 있고 인터벌은 정지 */
+function setRootUI(tab){
+  ROOT_TABS.forEach(function(t){
     document.getElementById('rt-'+t).className='rt'+(t===tab?' on':'');
     document.getElementById(t+'-panel').className='root-panel'+(t===tab?' on':'');
   });
+}
+function switchRoot(tab){
+  setRootUI(tab);
   if(tab==='customize') refreshCustomizePanes();
+  if(tab==='courseinfo') renderCourseInfoPanel();
+  if(tab==='home'){ renderSetup(); updateResumeBanner(); }
   if(tab==='timer'){
-    /* 진행 중 세션이 있으면 앱 화면 바로 표시 */
-    if(sessStart){
-      showApp(true);
-    } else {
-      updateResumeBanner();
-    }
+    if(sessStart&&suspended&&loadSession()){ resumeSession(); }
+    else if(sessStart){ showApp(true); }
+    else { showApp(false); }
   }
 }
 
 /* ══ SETUP ══ */
 var selCourse=null, bookMin=0;
 
-function switchSetupTab(tab){
-  ['course','option','dil','log'].forEach(function(t){
-    document.getElementById('stab-'+t).className='setup-tab'+(t===tab?' on':'');
-    document.getElementById('spane-'+t).className='setup-pane'+(t===tab?' on':'');
-  });
-  /* 기록 탭이면 세차 시작 버튼 숨기기 */
-  var cta=document.getElementById('setup-cta');
-  if(cta) cta.style.display=tab==='log'?'none':'flex';
-  if(tab==='dil') renderDilGrid('dil-setup-grid',true);
-  if(tab==='option') renderOptionPane();
-  if(tab==='log') renderSetupLogPanel();
-}
-
 function renderSetup(){
-  /* 앱 이름/장소 */
-  var _aloc=document.getElementById('ah-loc');if(_aloc)_aloc.textContent=appSettings.location;
-  document.getElementById('setup-subtitle').textContent=appSettings.location;
   /* 코스 그리드 */
   var g=document.getElementById('pgrid');g.innerHTML='';
   courses.forEach(function(c){
     var isEmpty=c.empty&&!(c.stepIds||[]).length;
     var card=renderCourseCard(c, function(){
       if(isEmpty){switchRoot('customize');switchCustTab('courses');openCourseModal(c.id,null);}
-      else{selCourse=c.id;renderSetup();updatePreview();}
+      else{if(!canChangeCourse())return;selCourse=c.id;renderSetup();}
     });
     g.appendChild(card);
   });
+  renderBook();
+  renderDilGrid('dil-setup-grid',true);
   updatePreview();
 }
 
@@ -1008,7 +1117,7 @@ function renderCourseCard(c, onClick){
   if(isEmpty){
     d.innerHTML='<div class="pc-top"><div class="pc-icon">'+c.icon+'</div><div class="pc-name">'+c.name+'</div></div>'
       +'<div class="pc-rec">'+c.rec+'</div>'
-      +'<div class="pc-edit-lbl">✏️ 커스텀 탭에서 편집</div>';
+      +'<div class="pc-edit-lbl">✏️ 설정 탭에서 편집</div>';
   } else {
     var keywords=getCourseKeywords(c);
     d.innerHTML='<div class="pc-check">'+svgChk(10)+'</div>'
@@ -1016,62 +1125,33 @@ function renderCourseCard(c, onClick){
       +'<div class="pc-time">'+toHM(getCourseEst(c))+'</div>'
       +(keywords?'<div class="pc-flow">'+keywords+'</div>':'')
       +'<div class="pc-rec">'+c.rec+'</div>';
+    var ib=document.createElement('button');ib.className='pc-info';ib.type='button';ib.innerHTML='ⓘ 상세';
+    ib.addEventListener('click',function(e){e.stopPropagation();openCourseInfo(c.id);});
+    d.appendChild(ib);
   }
   d.addEventListener('click', onClick);
   return d;
 }
 
-function renderOptionPane(){
-  /* 코스 그리드 */
-  var g2=document.getElementById('pgrid2');
-  if(g2){
-    g2.innerHTML='';
-    courses.forEach(function(c){
-      var isEmpty=c.empty&&!(c.stepIds||[]).length;
-      var card=renderCourseCard(c, function(){
-        if(isEmpty){switchRoot('customize');switchCustTab('courses');openCourseModal(c.id,null);}
-        else{selCourse=c.id;renderSetup();renderOptionPane();updatePreview();}
-      });
-      g2.appendChild(card);
-    });
-  }
-  /* 선택 배너 */
-  var banner=document.getElementById('sel-course-banner');
-  var c=selCourse?courses.find(function(x){return x.id===selCourse;}):null;
-  if(banner){
-    if(c&&!c.empty){
-      banner.style.display='flex';
-      document.getElementById('scb-icon').textContent=c.icon;
-      document.getElementById('scb-name').textContent=c.name;
-      document.getElementById('scb-sub').textContent=toHM(getCourseEst(c))+' · '+c.rec;
-    } else {
-      banner.style.display='none';
-    }
-  }
+function renderBook(){
   /* 예약 칩 */
   var chips=document.getElementById('bs-chips');chips.innerHTML='';
   [1,2,3,4,5,6,8,10,12].forEach(function(h){
     var btn=document.createElement('button');
     btn.className='bs-chip'+(bookMin===h*60?' sel':'');
     btn.textContent=h+'H';
-    btn.addEventListener('click',function(){bookMin=h*60;renderOptionPane();updatePreview();});
+    btn.addEventListener('click',function(){bookMin=h*60;renderBook();updatePreview();renderCourseDetailInline();});
     chips.appendChild(btn);
   });
   var bsValEl=document.getElementById('bs-val');
   if(bsValEl){
-    if(bookMin>0){
-      bsValEl.textContent=toHM(bookMin);
-      bsValEl.className='bs-val-big';
-    } else {
-      bsValEl.textContent='미설정';
-      bsValEl.className='bs-val-unset';
-    }
+    if(bookMin>0){bsValEl.textContent=toHM(bookMin);bsValEl.className='bs-val-big';}
+    else{bsValEl.textContent='미설정';bsValEl.className='bs-val-unset';}
   }
-  updatePreview();
 }
 
-function adjBook(delta){bookMin=Math.max(0,bookMin+delta);renderOptionPane();}
-function resetBook(){bookMin=0;renderOptionPane();}
+function adjBook(delta){bookMin=Math.max(0,bookMin+delta);renderBook();updatePreview();renderCourseDetailInline();}
+function resetBook(){bookMin=0;renderBook();updatePreview();renderCourseDetailInline();}
 
 function updatePreview(){
   var activeStepsArr=getActiveSteps();
@@ -1080,13 +1160,13 @@ function updatePreview(){
   var html='<span class="hi">'+activeStepsArr.length+'단계</span>　';
   if(bookMin>0){
     var diff=bookMin-tot;
-    html+='예약 '+toHM(bookMin)+'　예상 <span class="'+(diff>=0?'ok':'warn')+'">'+toHM(tot)+'</span>　여유 <span class="'+(diff>=0?'ok':'warn')+'">'+(diff>=0?'+':'')+toHM(Math.abs(diff))+'</span>';
+    html+='예약 '+toHM(bookMin)+'　예상 <span class="'+(diff>=0?'ok':'warn')+'">'+toHM(tot)+'</span>　여유 <span class="'+(diff>=0?'ok':'warn')+'">'+(diff>=0?'+':'-')+toHM(Math.abs(diff))+'</span>';
   } else {
     html+='예상 <span class="neu">'+toHM(tot)+'</span>';
   }
   info.innerHTML=html;
 
-  var list=document.getElementById('prevlist');list.innerHTML='';
+  var list=document.getElementById('prevlist');if(!list)return;list.innerHTML='';
   var activeIds={};activeStepsArr.forEach(function(s){activeIds[s.id]=true;});
   steps.forEach(function(s){
     var on=!!activeIds[s.id];
@@ -1099,16 +1179,35 @@ function updatePreview(){
 
 /* ══ 희석 계산기 ══ */
 function getDilSettings(pid){
-  var p=products.find(function(x){return x.id===pid;});
-  if(!dilSettings[pid]) dilSettings[pid]={vol:p?p.defaultVol:1000,levelIdx:p?p.defaultLevel:0,customRatio:null};
-  return dilSettings[pid];
+  if(!dilSettings[pid]) dilSettings[pid]={vol:null,levelIdx:null,customRatio:null};
+  var s=dilSettings[pid];
+  if(s.vol===undefined)s.vol=null;if(s.levelIdx===undefined)s.levelIdx=null;if(s.customRatio===undefined)s.customRatio=null;
+  return s;
 }
+/* 실제 적용 값 + 직접입력 여부 */
+function dilState(pid){
+  var p=products.find(function(x){return x.id===pid;});
+  var s=getDilSettings(pid);
+  var lv=(p&&p.levels)||[];
+  var defLv=p&&lv[p.defaultLevel]?p.defaultLevel:0;
+  var lvIdx=(s.levelIdx!==null&&lv[s.levelIdx])?s.levelIdx:defLv;
+  var defVol=p?p.defaultVol:1000;
+  return {
+    p:p,s:s,lvIdx:lvIdx,defLv:defLv,defVol:defVol,
+    vol:s.vol!==null?s.vol:defVol,
+    volCustom:s.vol!==null&&s.vol!==defVol,
+    lvCustom:s.customRatio===null&&lvIdx!==defLv,
+    ratioCustom:s.customRatio!==null,
+    ratio:s.customRatio!==null?s.customRatio:(lv[lvIdx]?lv[lvIdx].ratio:10)
+  };
+}
+function dilIsCustom(pid){var st=dilState(pid);return st.volCustom||st.lvCustom||st.ratioCustom;}
+function dilReset(pid){dilSettings[pid]={vol:null,levelIdx:null,customRatio:null};saveDilSettings();}
 function dilCalc(pid){
   var p=products.find(function(x){return x.id===pid;});
   if(!p) return {ratio:10,conc:0,water:0,total:0};
-  var s=getDilSettings(pid);
-  var ratio=s.customRatio!==null?s.customRatio:(p.levels[s.levelIdx]?p.levels[s.levelIdx].ratio:10);
-  var total=s.vol;
+  var st=dilState(pid);
+  var total=st.vol,ratio=st.ratio;
   var conc=Math.round(total/(ratio+1));
   return {ratio:ratio,conc:conc,water:total-conc,total:total};
 }
@@ -1122,54 +1221,76 @@ function dilAmtText(stepId){
 }
 
 function buildDilCard(p,container,refreshFn){
-  var s=getDilSettings(p.id);
-  var d=dilCalc(p.id);
-  var card=document.createElement('div');card.className='dil-card';
-  var head=document.createElement('div');head.className='dil-card-head';
-  head.innerHTML='<div class="dil-card-name">'+p.name+'</div><div class="dil-card-ratio">1:'+d.ratio+'</div>';
-  card.appendChild(head);
-  var prodEl=document.createElement('div');prodEl.className='dil-card-prod';prodEl.textContent=p.prod+' · '+p.vessel;
-  card.appendChild(prodEl);
+  var st=dilState(p.id),d=dilCalc(p.id);
+  var anyCustom=st.volCustom||st.lvCustom||st.ratioCustom;
+  function chip(custom){return '<span class="dil-src '+(custom?'custom':'def')+'">'+(custom?'직접입력':'기본값')+'</span>';}
+  var card=document.createElement('div');card.className='dil-card'+(anyCustom?' has-custom':'');
 
-  /* 레벨 버튼 */
-  var preDiv=document.createElement('div');preDiv.style.cssText='padding:0 14px 8px;';
-  var preLbl=document.createElement('div');preLbl.className='dil-ctrl-lbl';preLbl.textContent='오염도';
+  var head=document.createElement('div');head.className='dil-card-head';
+  head.innerHTML='<div class="dil-card-name">'+esc(p.name)+'</div><div class="dil-card-ratio'+(st.ratioCustom||st.lvCustom?' custom':'')+'">1:'+d.ratio+'</div>';
+  card.appendChild(head);
+  var prodEl=document.createElement('div');prodEl.className='dil-card-prod';prodEl.textContent=(p.prod||'')+(p.vessel?' · '+p.vessel:'');
+  card.appendChild(prodEl);
+  if(p.note){var nt=document.createElement('div');nt.className='dil-card-note';nt.textContent='💡 '+p.note;card.appendChild(nt);}
+
+  /* 오염도 레벨 */
+  var preDiv=document.createElement('div');preDiv.style.cssText='padding:0 14px 10px;';
+  var preLbl=document.createElement('div');preLbl.className='dil-ctrl-lbl';
+  preLbl.innerHTML='<span>오염도</span>'+(st.ratioCustom?'<span class="dil-src off">직접입력 비율 사용 중</span>':chip(st.lvCustom));
   preDiv.appendChild(preLbl);
   var grp=document.createElement('div');grp.className='dil-vessel-group';
   (p.levels||[]).forEach(function(lv,li){
     var btn=document.createElement('button');
-    btn.className='dil-vessel-btn'+(s.customRatio===null&&li===s.levelIdx?' sel':'');
+    btn.className='dil-vessel-btn'+(!st.ratioCustom&&li===st.lvIdx?' sel':'')+(li===st.defLv?' is-def':'');
     btn.textContent=lv.label;
-    btn.addEventListener('click',function(){dilSettings[p.id].levelIdx=li;dilSettings[p.id].customRatio=null;saveDilSettings();refreshFn();});
+    btn.addEventListener('click',function(){var s=getDilSettings(p.id);s.levelIdx=(li===st.defLv?null:li);s.customRatio=null;saveDilSettings();refreshFn();});
     grp.appendChild(btn);
   });
   preDiv.appendChild(grp);card.appendChild(preDiv);
 
-  /* 직접입력 + 용량 */
+  /* 직접입력 비율 + 총 용량 (입력 가능 칸) */
   var ctrl=document.createElement('div');ctrl.className='dil-controls';
-  var cDiv=document.createElement('div');
-  cDiv.innerHTML='<div class="dil-ctrl-lbl">직접입력 (1:N)</div>';
-  var cWrap=document.createElement('div');cWrap.className='dil-vol-wrap';
-  var cPfx=document.createElement('span');cPfx.className='dil-vol-unit';cPfx.textContent='1:';
-  var cInp=document.createElement('input');cInp.type='number';cInp.className='dil-vol-input';
-  cInp.placeholder=String(d.ratio);cInp.value=s.customRatio!==null?s.customRatio:'';cInp.min=1;cInp.max=9999;
-  var cT=null;cInp.addEventListener('input',function(){clearTimeout(cT);var inp=this;cT=setTimeout(function(){var v=parseInt(inp.value);dilSettings[p.id].customRatio=isNaN(v)||v<1?null:v;saveDilSettings();refreshFn();},600);});
-  cWrap.appendChild(cPfx);cWrap.appendChild(cInp);cDiv.appendChild(cWrap);ctrl.appendChild(cDiv);
+  function field(lblText,custom,resetFn){
+    var f=document.createElement('div');
+    var l=document.createElement('div');l.className='dil-ctrl-lbl';
+    l.innerHTML='<span>'+lblText+'</span>'+chip(custom);
+    if(custom&&resetFn){var r=document.createElement('button');r.className='dil-field-reset';r.type='button';r.textContent='↺';r.title='기본값으로';r.addEventListener('click',resetFn);l.appendChild(r);}
+    f.appendChild(l);return f;
+  }
+  var cDiv=field('비율 직접입력',st.ratioCustom,function(){getDilSettings(p.id).customRatio=null;saveDilSettings();refreshFn();});
+  var cWrap=document.createElement('label');cWrap.className='dil-vol-wrap dil-edit'+(st.ratioCustom?' custom':'');
+  cWrap.innerHTML='<span class="dil-vol-unit">1 :</span>';
+  var cInp=document.createElement('input');cInp.type='number';cInp.inputMode='numeric';cInp.className='dil-vol-input';
+  cInp.placeholder='입력';cInp.value=st.ratioCustom?st.s.customRatio:'';cInp.min=1;cInp.max=9999;
+  var cT=null;cInp.addEventListener('input',function(){clearTimeout(cT);var inp=this;cT=setTimeout(function(){var v=parseInt(inp.value);getDilSettings(p.id).customRatio=isNaN(v)||v<1?null:v;saveDilSettings();refreshFn();},700);});
+  cWrap.appendChild(cInp);cWrap.insertAdjacentHTML('beforeend','<span class="dil-pen">✎</span>');
+  cDiv.appendChild(cWrap);ctrl.appendChild(cDiv);
 
-  var vDiv=document.createElement('div');
-  vDiv.innerHTML='<div class="dil-ctrl-lbl">총 용량</div>';
-  var vWrap=document.createElement('div');vWrap.className='dil-vol-wrap';
-  var vInp=document.createElement('input');vInp.type='number';vInp.className='dil-vol-input';vInp.value=s.vol;vInp.min=50;vInp.max=50000;vInp.step=50;
-  var vT=null;vInp.addEventListener('input',function(){clearTimeout(vT);var inp=this;vT=setTimeout(function(){var v=parseInt(inp.value);if(!isNaN(v)&&v>=50){dilSettings[p.id].vol=v;saveDilSettings();refreshFn();}},600);});
-  var vUnit=document.createElement('span');vUnit.className='dil-vol-unit';vUnit.textContent='ml';
-  vWrap.appendChild(vInp);vWrap.appendChild(vUnit);vDiv.appendChild(vWrap);ctrl.appendChild(vDiv);
+  var vDiv=field('총 용량',st.volCustom,function(){getDilSettings(p.id).vol=null;saveDilSettings();refreshFn();});
+  var vWrap=document.createElement('label');vWrap.className='dil-vol-wrap dil-edit'+(st.volCustom?' custom':'');
+  var vInp=document.createElement('input');vInp.type='number';vInp.inputMode='numeric';vInp.className='dil-vol-input';vInp.value=st.vol;vInp.min=50;vInp.max=50000;vInp.step=10;
+  var vT=null;vInp.addEventListener('input',function(){clearTimeout(vT);var inp=this;vT=setTimeout(function(){var v=parseInt(inp.value);if(!isNaN(v)&&v>=50){getDilSettings(p.id).vol=(v===st.defVol?null:v);saveDilSettings();refreshFn();}},700);});
+  vWrap.appendChild(vInp);vWrap.insertAdjacentHTML('beforeend','<span class="dil-vol-unit">ml</span><span class="dil-pen">✎</span>');
+  vDiv.appendChild(vWrap);
+  if(st.volCustom){var hint=document.createElement('div');hint.className='dil-def-hint';hint.textContent='기본 '+st.defVol+'ml';vDiv.appendChild(hint);}
+  ctrl.appendChild(vDiv);
   card.appendChild(ctrl);
 
+  /* 계산 결과 (읽기 전용) */
+  var resLbl=document.createElement('div');resLbl.className='dil-ctrl-lbl';resLbl.style.cssText='padding:0 14px;';resLbl.innerHTML='<span>계산 결과</span><span class="dil-src auto">자동</span>';
+  card.appendChild(resLbl);
   var res=document.createElement('div');res.className='dil-result';
   res.innerHTML='<div class="dil-res-item"><div class="dil-res-lbl">원액</div><div class="dil-res-val conc">'+d.conc+'ml</div></div>'
     +'<div class="dil-res-item"><div class="dil-res-lbl">물</div><div class="dil-res-val water">'+d.water+'ml</div></div>'
     +'<div class="dil-res-item"><div class="dil-res-lbl">합계</div><div class="dil-res-val total">'+d.total+'ml</div></div>';
   card.appendChild(res);
+
+  if(anyCustom){
+    var rb=document.createElement('button');rb.className='dil-reset-all';rb.type='button';
+    rb.textContent='↺ 약제 기본값으로 되돌리기';
+    rb.addEventListener('click',function(){dilReset(p.id);refreshFn();});
+    card.appendChild(rb);
+  }
   container.appendChild(card);
 }
 
@@ -1180,6 +1301,108 @@ function renderDilGrid(containerId,showAll){
     if(!showAll&&!activeIds[p.id])return;
     buildDilCard(p,container,function(){renderDilGrid(containerId,showAll);});
   });
+  if(containerId==='dil-setup-grid') renderCourseDetailInline();
+}
+
+/* ══ 코스 상세 정보 ══ */
+function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch];});}
+function courseStepsOf(c){
+  var n=1;
+  return (c.stepIds||[]).map(function(sid){var s=steps.find(function(x){return x.id===sid;});return s?Object.assign({},s,{dn:n++}):null;}).filter(Boolean);
+}
+/* 코스 요약 + 단계 목록(탭하면 약제·희석·포인트 펼침) */
+function buildCourseDetail(c,container){
+  container.innerHTML='';
+  var list=courseStepsOf(c);
+  var tot=list.reduce(function(a,s){return a+s.est;},0);
+  var sum=document.createElement('div');sum.className='cd-sum';
+  var h='<div class="cd-sum-item"><div class="cd-sum-lbl">단계</div><div class="cd-sum-val">'+list.length+'</div></div>'
+    +'<div class="cd-sum-item"><div class="cd-sum-lbl">예상 소요</div><div class="cd-sum-val">'+toHM(tot)+'</div></div>'
+    +'<div class="cd-sum-item"><div class="cd-sum-lbl">약제</div><div class="cd-sum-val">'+list.filter(function(s){return s.productId&&products.some(function(p){return p.id===s.productId;});}).length+'</div></div>';
+  if(bookMin>0){var df=bookMin-tot;h+='<div class="cd-sum-item"><div class="cd-sum-lbl">예약 대비</div><div class="cd-sum-val '+(df>=0?'ok':'warn')+'">'+(df>=0?'+':'-')+toHM(Math.abs(df))+'</div></div>';}
+  sum.innerHTML=h;container.appendChild(sum);
+  var box=document.createElement('div');box.className='cd-list';
+  if(!list.length){box.innerHTML='<div class="cd-empty">포함된 단계가 없어요</div>';container.appendChild(box);return;}
+  list.forEach(function(s){
+    var row=document.createElement('div');row.className='cd-row';
+    var p=s.productId?products.find(function(x){return x.id===s.productId;}):null;
+    var d=p?dilCalc(p.id):null;
+    row.innerHTML='<div class="cd-row-head"><div class="cd-n">'+pad(s.dn)+'</div><div class="cd-name">'+esc(s.name)+'</div>'
+      +(d?'<div class="cd-dil">1:'+d.ratio+'</div>':'')
+      +'<div class="cd-est">'+s.est+'분</div>'
+      +'<div class="cd-chev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
+      +'<div class="cd-body">'
+      +(s.prod?'<div class="cd-line">🧴 '+esc(s.prod)+'</div>':'')
+      +(d?'<div class="cd-line">🧪 <b>'+esc(p.name)+'</b> · '+esc(p.vessel)+' · 원액 <b>'+d.conc+'ml</b> + 물 <b>'+d.water+'ml</b> (1:'+d.ratio+')</div>':'')
+      +((s.pts&&s.pts.length)?'<div class="cd-line">'+s.pts.map(function(t){return '<span class="pt">'+esc(t)+'</span>';}).join('')+'</div>':'')
+      +'</div>';
+    row.querySelector('.cd-row-head').addEventListener('click',function(){row.classList.toggle('open');});
+    box.appendChild(row);
+  });
+  container.appendChild(box);
+}
+function renderCourseDetailInline(){
+  var el=document.getElementById('course-detail-inline');if(!el)return;
+  var sec=document.getElementById('course-detail-sec');
+  var c=selCourse?courses.find(function(x){return x.id===selCourse;}):null;
+  if(!c||(c.empty&&!(c.stepIds||[]).length)){sec.style.display='none';return;}
+  sec.style.display='';
+  document.getElementById('course-detail-lbl').textContent='선택한 코스 구성 · '+c.icon+' '+c.name;
+  buildCourseDetail(c,el);
+}
+/* 진행 중 세차가 있으면 코스 변경 불가 (진행 중 세션이 selCourse를 사용) */
+function canChangeCourse(){
+  if(sessStart||loadSession()){alert('진행 중인 세차가 있어요.\n타이머 탭에서 종료하거나 초기화한 뒤 코스를 바꿀 수 있어요.');return false;}
+  return true;
+}
+var ciOpen={};
+function renderCourseInfoPanel(){
+  var list=document.getElementById('ci-list');if(!list)return;list.innerHTML='';
+  var running=!!(sessStart||loadSession());
+  var shown=courses.filter(function(c){return !(c.empty&&!(c.stepIds||[]).length);});
+  if(!Object.keys(ciOpen).length&&selCourse) ciOpen[selCourse]=true;
+  if(!shown.length){list.innerHTML='<div class="cd-empty">등록된 코스가 없어요</div>';return;}
+  shown.forEach(function(c){
+    var isSel=selCourse===c.id;
+    var card=document.createElement('div');card.className='ci-card'+(isSel?' sel':'')+(ciOpen[c.id]?' open':'');
+    var n=courseStepsOf(c).length;
+    card.innerHTML='<div class="ci-head"><div class="ci-icon">'+c.icon+'</div><div style="flex:1;min-width:0;">'
+      +'<div class="ci-title">'+esc(c.name)+(isSel?'<span class="ci-badge">선택됨</span>':'')+'</div>'
+      +'<div class="ci-sub">'+toHM(getCourseEst(c))+' · '+n+'단계 · '+esc(c.rec||'')+'</div></div>'
+      +'<div class="cd-chev ci-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>';
+    var body=document.createElement('div');body.className='ci-body';
+    var detail=document.createElement('div');detail.style.cssText='display:flex;flex-direction:column;gap:8px;';
+    body.appendChild(detail);
+    if(!isSel){
+      var btn=document.createElement('button');btn.className='btn-primary';btn.style.width='100%';
+      btn.textContent='이 코스로 선택하고 세차설정으로';
+      if(running){btn.disabled=true;btn.style.opacity='.5';}
+      btn.addEventListener('click',function(){if(!canChangeCourse())return;selCourse=c.id;ciOpen={};ciOpen[c.id]=true;switchRoot('home');});
+      body.appendChild(btn);
+      if(running){var note=document.createElement('div');note.className='ci-note';note.textContent='세차 진행 중에는 코스를 바꿀 수 없어요';body.appendChild(note);}
+    }
+    card.appendChild(body);
+    card.querySelector('.ci-head').addEventListener('click',function(){
+      ciOpen[c.id]=!ciOpen[c.id];card.classList.toggle('open');
+      if(ciOpen[c.id]&&!detail.childNodes.length) buildCourseDetail(c,detail);
+    });
+    if(ciOpen[c.id]) buildCourseDetail(c,detail);
+    list.appendChild(card);
+  });
+}
+
+function openCourseInfo(cid){
+  var c=courses.find(function(x){return x.id===cid;});if(!c)return;
+  document.getElementById('ci-icon').textContent=c.icon;
+  document.getElementById('ci-name').textContent=c.name;
+  document.getElementById('ci-rec').textContent=c.rec||'';
+  buildCourseDetail(c,document.getElementById('ci-body'));
+  var btn=document.getElementById('ci-select-btn');
+  var isSel=selCourse===c.id;
+  btn.textContent=isSel?'✓ 선택된 코스':'이 코스로 선택';
+  btn.disabled=isSel;btn.style.opacity=isSel?'.55':'1';
+  btn.onclick=function(){if(!canChangeCourse())return;selCourse=c.id;closeModal('course-info-modal');renderSetup();};
+  openModal('course-info-modal');
 }
 
 /* ══ APP STATE ══ */
@@ -1230,25 +1453,6 @@ var wakeLock=null;
 async function reqWakeLock(){if(!('wakeLock' in navigator))return;try{wakeLock=await navigator.wakeLock.request('screen');}catch(e){}}
 function relWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}}
 
-/* ══ START ══ */
-function startApp(){
-  if(!selCourse){alert('코스를 선택해주세요.');return;}
-  activeSteps=getActiveSteps();
-  if(!activeSteps.length){alert('선택한 코스에 단계가 없습니다.');return;}
-  cur=0;results={};stepSec=0;totalPaused=0;isPaused=false;
-  sessStart=new Date();stepStart=new Date();
-  document.getElementById('setup').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('ah-row2').style.display='flex';
-  document.getElementById('scroll').className='on';
-  renderSteps();updateProg();
-  startStepTimer();
-  reqWakeLock();
-  clearInterval(globalIv);
-  globalIv=setInterval(function(){tickGlobal();},1000);tickGlobal();
-  scrollToCur();
-}
-
 /* ══ HOME / RESUME ══ */
 function goHome(){
   /* 진행 중 상태 표시 */
@@ -1279,34 +1483,35 @@ function homeAction(type){
       }));
     }catch(e){}
     isPaused=false;pauseStart=null;
+    suspended=true;
     relWakeLock();
     showApp(false);
-    updateResumeBanner();
     updateTimerTabBadge();
+    switchRoot('home');
   } else if(type==='continue'){
     /* 타이머 유지하며 홈 — globalIv는 계속 돌아감 */
     saveSession();
-    showApp(false);
-    updateResumeBanner();
     updateTimerTabBadge();
+    switchRoot('home');
   } else if(type==='reset'){
     clearInterval(globalIv);clearInterval(stepIv);
     relWakeLock();clearSession();sessStart=null;
-    isPaused=false;pauseStart=null;totalPaused=0;
+    isPaused=false;pauseStart=null;totalPaused=0;suspended=false;
     document.getElementById('paused-banner').className='paused-banner';
     showApp(false);
-    updateResumeBanner();
     updateTimerTabBadge();
+    switchRoot('home');
   }
 }
 
 function showApp(show){
   document.getElementById('app').style.display=show?'flex':'none';
-  if(!show){document.getElementById('app').style.flexDirection='';}
-  document.getElementById('setup').style.display=show?'none':'flex';
+  document.getElementById('timer-idle').style.display=show?'none':'flex';
   if(show){
     document.getElementById('ah-row2').style.display='flex';
     document.getElementById('scroll').className='on';
+  } else {
+    renderSetupLogPanel();
   }
 }
 
@@ -1319,8 +1524,9 @@ function resumeSession(){
   sessStart=new Date(s.sessStart);
   stepStart=new Date(s.stepStart);
   totalPaused=s.totalPaused||0;
-  isPaused=false;pauseStart=null;
+  isPaused=false;pauseStart=null;suspended=false;
   stepSec=Math.max(0,Math.floor((Date.now()-stepStart.getTime()-totalPaused)/1000));
+  setRootUI('timer');
   showApp(true);
   renderSteps();updateProg();
   startStepTimerFrom(stepSec);
@@ -1398,15 +1604,19 @@ function startApp(){
   if(loadSession()){
     if(!confirm('진행 중인 세차가 있어요. 새로 시작하면 기존 기록이 사라집니다. 계속할까요?'))return;
   }
+  clearInterval(globalIv);clearInterval(stepIv);
   clearSession();
-  cur=0;results={};stepSec=0;totalPaused=0;isPaused=false;
+  cur=0;results={};stepSec=0;totalPaused=0;isPaused=false;pauseStart=null;suspended=false;
+  document.getElementById('paused-banner').className='paused-banner';
   sessStart=new Date();stepStart=new Date();
+  setRootUI('timer');
   showApp(true);
   renderSteps();updateProg();
   startStepTimer();
   reqWakeLock();
   clearInterval(globalIv);
   globalIv=setInterval(function(){tickGlobal();saveSession();},1000);tickGlobal();
+  saveSession();
   scrollToCur();
   updateTimerTabBadge();
 }
@@ -1414,10 +1624,10 @@ function startApp(){
 function goSetup(){
   if(!confirm('홈으로 돌아가면 현재 기록이 초기화됩니다. 계속할까요?'))return;
   clearInterval(globalIv);clearInterval(stepIv);
-  relWakeLock();clearSession();sessStart=null;
+  relWakeLock();clearSession();sessStart=null;suspended=false;
   showApp(false);
-  updateResumeBanner();
   updateTimerTabBadge();
+  switchRoot('home');
 }
 
 function startStepTimer(){
@@ -1706,7 +1916,7 @@ function showDone(){
   saveHistory();
   clearSession();
   clearInterval(globalIv);clearInterval(stepIv);
-  relWakeLock();sessStart=null;
+  relWakeLock();sessStart=null;suspended=false;
   updateTimerTabBadge();
   var h='<div class="dstat"><div class="ds-l">총 소요</div><div class="ds-v">'+toHM(totalMin)+'</div></div>'
     +'<div class="dstat"><div class="ds-l">예상 대비</div><div class="ds-v">'+diff+'</div></div>'
@@ -1797,7 +2007,7 @@ function refreshCustomizePanes(){
   renderCoursesList();
   /* 설정 값 채우기 */
   document.getElementById('setting-appname').value=appSettings.appName||'';
-  document.getElementById('setting-location').value=appSettings.location||'';
+  var _locEl=document.getElementById('setting-location');if(_locEl)_locEl.value=appSettings.location||'';
 }
 
 /* ── 단계 목록 ── */
@@ -1939,22 +2149,50 @@ function saveProduct(){
     name:name,prod:document.getElementById('pm-prod').value.trim(),
     vessel:document.getElementById('pm-vessel').value.trim(),
     defaultVol:parseInt(document.getElementById('pm-vol').value)||1000,
-    levels:levels,defaultLevel:0
+    levels:levels,defaultLevel:midLevel(levels)
   };
+  var old=editingProductId?products.find(function(x){return x.id===editingProductId;}):null;
+  if(old&&old.note) prod.note=old.note;
   if(editingProductId){
     var idx=products.findIndex(function(x){return x.id===editingProductId;});
     if(idx>=0)products[idx]=prod;
   } else {
     products.push(prod);
   }
+  syncDilSettings(prod,old);
   saveProducts();renderProductsList();closeModal('product-modal');
+  refreshDilViews();
+}
+
+/* 약제 수정 → 세차화면 희석 설정 동기화
+   - 기본 용량이 바뀌면 현재 용량을 새 기본값으로 교체
+   - 레벨이 바뀌어 선택 레벨이 없어졌으면 기본 레벨로 되돌림 */
+function syncDilSettings(prod,old){
+  var ds=dilSettings[prod.id];
+  if(!ds){saveDilSettings();return;}
+  if(!old||old.defaultVol!==prod.defaultVol) ds.vol=null;
+  if(!old||JSON.stringify(old.levels)!==JSON.stringify(prod.levels)) ds.levelIdx=null;
+  saveDilSettings();
+}
+/* 희석값이 표시되는 모든 화면 갱신 */
+function refreshDilViews(){
+  renderDilGrid('dil-setup-grid',true);
+  updatePreview();
+  if(sessStart&&activeSteps.length){
+    renderSteps();
+    var dp=document.getElementById('dil-main-panel');
+    if(dp&&dp.classList.contains('on')) renderDilGrid('dil-app-grid',true);
+  }
 }
 function deleteProduct(){
   if(!editingProductId)return;
   if(!confirm('이 약제를 삭제할까요?'))return;
   products=products.filter(function(x){return x.id!==editingProductId;});
   steps.forEach(function(s){if(s.productId===editingProductId)s.productId=null;});
+  delete dilSettings[editingProductId];saveDilSettings();
   saveProducts();saveSteps();renderProductsList();closeModal('product-modal');
+  if(sessStart&&activeSteps.length){activeSteps.forEach(function(a){if(a.productId===editingProductId)a.productId=null;});}
+  refreshDilViews();
 }
 
 /* ── 코스 목록 ── */
@@ -2065,11 +2303,9 @@ function deleteCourse(){
 /* ── 앱 설정 ── */
 function saveAppSettings(){
   appSettings.appName=document.getElementById('setting-appname').value||'디테일링 세차 타이머';
-  appSettings.location=document.getElementById('setting-location').value||'';
+  var _locIn=document.getElementById('setting-location');if(_locIn)appSettings.location=_locIn.value||'';
   ss(K_APP,appSettings);
-  /* 로고 이미지는 유지, 장소만 업데이트 */
   var _aloc=document.getElementById('ah-loc');if(_aloc)_aloc.textContent=appSettings.location;
-  document.getElementById('setup-subtitle').textContent=appSettings.location;
 }
 
 /* ── 초기화 ── */
@@ -2079,6 +2315,7 @@ function resetToDefault(){
   products=JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
   courses=JSON.parse(JSON.stringify(DEFAULT_COURSES));
   appSettings=JSON.parse(JSON.stringify(DEFAULT_APP_SETTINGS));
+  dilSettings={};saveDilSettings();
   saveSteps();saveProducts();saveCourses();ss(K_APP,appSettings);
   selCourse=courses[0].id;
   refreshCustomizePanes();renderSetup();
@@ -2107,6 +2344,7 @@ function importData(e){
       products=data.products||products;
       courses=data.courses||courses;
       if(data.appSettings)appSettings=data.appSettings;
+      dilSettings={};saveDilSettings();
       saveSteps();saveProducts();saveCourses();ss(K_APP,appSettings);
       selCourse=courses.length?courses[0].id:null;
       refreshCustomizePanes();renderSetup();
@@ -2127,11 +2365,84 @@ document.querySelectorAll('.modal-bg').forEach(function(bg){
 
 /* ════ INIT ════ */
 (function(){
+  /* 1회 마이그레이션: 저장된 약제의 기본 레벨을 중간값으로, 직접입력 비율이 없는 희석 설정도 맞춤 */
+  var K_MIG='dt_mig_midlevel_v1';
+  try{
+    if(!localStorage.getItem(K_MIG)){
+      products.forEach(function(p){
+        p.defaultLevel=midLevel(p.levels);
+        var ds=dilSettings[p.id];
+        if(ds&&ds.customRatio===null) ds.levelIdx=p.defaultLevel;
+      });
+      saveProducts();saveDilSettings();
+      localStorage.setItem(K_MIG,'1');
+    }
+    /* 1회 마이그레이션: 휠클리너 제조사 희석표 기준 (물 200ml 기준, 보통 오염 = 원액 40 + 물 200) */
+    var K_MIG2='dt_mig_wheel_v1';
+    if(!localStorage.getItem(K_MIG2)){
+      var w=products.find(function(x){return x.id==='wheel';});
+      var dw=DEFAULT_PRODUCTS.find(function(x){return x.id==='wheel';});
+      var oldRatios='10,5,3';
+      if(w&&dw&&(w.levels||[]).map(function(l){return l.ratio;}).join(',')===oldRatios){
+        var oldDefVol=w.defaultVol;
+        w.levels=JSON.parse(JSON.stringify(dw.levels));
+        w.defaultLevel=dw.defaultLevel;
+        if(oldDefVol===400) w.defaultVol=dw.defaultVol;
+        var ds=dilSettings.wheel;
+        if(ds&&ds.vol===oldDefVol) ds.vol=w.defaultVol;
+        saveProducts();saveDilSettings();
+      }
+      localStorage.setItem(K_MIG2,'1');
+    }
+    /* 1회: 희석 설정 구조 변경 — 용량·레벨은 약제 기본값을 따르도록 초기화(직접입력 비율은 유지) */
+    var K_MIG3='dt_mig_dilmodel_v1';
+    if(!localStorage.getItem(K_MIG3)){
+      Object.keys(dilSettings).forEach(function(pid){
+        var ds=dilSettings[pid],pp=products.find(function(x){return x.id===pid;});
+        if(!pp){delete dilSettings[pid];return;}
+        ds.vol=null;
+        if(ds.levelIdx===pp.defaultLevel) ds.levelIdx=null;
+        if(ds.customRatio===undefined) ds.customRatio=null;
+      });
+      saveDilSettings();
+      localStorage.setItem(K_MIG3,'1');
+    }
+    /* 1회: 레벨 이름·제품명·안내문구를 상세페이지 기준으로 (사용자가 바꾸지 않은 기본 데이터만) */
+    var K_MIG4='dt_mig_labels_v1';
+    if(!localStorage.getItem(K_MIG4)){
+      var OLD_LBL={
+        alkali:['약(1:100)','중(1:80)','강(1:50)'],acid:['약(1:200)','중(1:150)','강(1:100)'],
+        mitwash:['약(1:1200)','중(1:1000)','강(1:800)'],touchless:['일반(1:200)','퍼포먼스(1:100)'],
+        wheel:['약한 오염(1:10)','보통 오염(1:5)','심한 오염(1:3)']
+      };
+      var OLD_PROD={wheel:'다이나믹 휠클리너 익스트랙트 S',touchless:'워터에이징 익스트렉트 S'};
+      DEFAULT_PRODUCTS.forEach(function(dp){
+        var sp=products.find(function(x){return x.id===dp.id;});if(!sp)return;
+        var lbls=(sp.levels||[]).map(function(l){return l.label;}).join('|');
+        if(OLD_LBL[dp.id]&&lbls===OLD_LBL[dp.id].join('|')) sp.levels=JSON.parse(JSON.stringify(dp.levels));
+        if(OLD_PROD[dp.id]&&sp.prod===OLD_PROD[dp.id]) sp.prod=dp.prod;
+        if(!sp.note&&dp.note) sp.note=dp.note;
+      });
+      var OLD_STEP={
+        wheel:{prod:'더클래스 다이나믹 휠클리너'},
+        'touchless-pre':{prod:'더클래스 워터에이징',pts:'고압수 헹굼 직후 도포|드라잉 전 적용'},
+        touchless:{prod:'더클래스 워터에이징',pts:'드라잉 후 적용'}
+      };
+      DEFAULT_STEPS.forEach(function(dst){
+        var o=OLD_STEP[dst.id];if(!o)return;
+        var ss_=steps.find(function(x){return x.id===dst.id;});if(!ss_)return;
+        if(ss_.prod===o.prod) ss_.prod=dst.prod;
+        if(o.pts&&(ss_.pts||[]).join('|')===o.pts) ss_.pts=dst.pts.slice();
+      });
+      saveProducts();saveSteps();
+      localStorage.setItem(K_MIG4,'1');
+    }
+  }catch(e){}
   selCourse=courses.length?courses[0].id:null;
   renderSetup();
-  renderDilGrid('dil-setup-grid',true);
+  showApp(false);
   document.getElementById('setting-appname').value=appSettings.appName||'';
-  document.getElementById('setting-location').value=appSettings.location||'';
+  var _locEl=document.getElementById('setting-location');if(_locEl)_locEl.value=appSettings.location||'';
   /* 이전 세션 복원 배너 표시 */
   updateResumeBanner();
   updateTimerTabBadge();
